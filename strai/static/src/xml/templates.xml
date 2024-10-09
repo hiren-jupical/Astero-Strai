@@ -1,0 +1,5 @@
+<template id="strai_assets_backend" name="strai_assets" inherit_id="web.assets_backend">
+    <xpath expr="." position="inside">
+        <link rel="stylesheet" href="/strai/static/src/css/styles.css"/>
+    </xpath>
+</template>

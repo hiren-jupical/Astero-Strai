@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="flyt_invoice_pdf_append_inherit_account_move_form" model="ir.ui.view">
+        <field name="name">account.move.form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='journal_div']" position="after">
+                <field name="flyt_pdf_append_ids" widget="many2many_binary" invisible="move_type not in ('out_refund', 'out_invoice')" readonly="state in ('posted', 'cancel') or id == False" groups="base.group_user"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

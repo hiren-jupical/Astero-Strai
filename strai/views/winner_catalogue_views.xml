@@ -1,0 +1,63 @@
+<odoo>
+    <data>
+        <record id="winner_catalogue_form_view" model="ir.ui.view">
+            <field name="name">winner.catalogue.form</field>
+            <field name="model">winner.catalogue</field>
+            <field name="arch" type="xml">
+                <form string="Winner katalog">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="supplier_id" domain="[('is_mto', '=', 'True'), ('ref', '!=', False)]" options="{'no_quick_create':True,'no_create_edit':True,'no_create': True}"/>
+                            <field name="catalogue_name"/>
+                            <field name="catalogue_version"/>
+                            <field name="accepted"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="winner_catalogue_tree_view" model="ir.ui.view">
+            <field name="name">winner.catalogue.tree</field>
+            <field name="model">winner.catalogue</field>
+            <field name="arch" type="xml">
+                <tree string="Winner kataloger">
+                    <field name="name"/>
+                    <field name="supplier_id"/>
+                    <field name="catalogue_name"/>
+                    <field name="catalogue_version"/>
+                    <field name="accepted"/>
+                    <field name="create_date" widget="custom_datetime"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="winner_catalogue_search" model="ir.ui.view">
+            <field name="name">winner.catalogue.search</field>
+            <field name="model">winner.catalogue</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="supplier_id"/>
+                    <field name="catalogue_name"/>
+                    <filter name="accepted" string="Accepted" domain="[('accepted', '=', True)]"/>
+                    <filter name="unaccepted" string="Unaccepted" domain="[('accepted', '=', False)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Supplier" name="supplier" context="{'group_by': 'supplier_id'}"/>
+                        <filter string="Catalogue name" name="cataloguename" context="{'group_by': 'catalogue_name'}"/>
+                        <filter string="Accepted" name="accepted" context="{'group_by': 'accepted'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_winner_catalogue" model="ir.actions.act_window">
+            <field name="name">Winner catalogues</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">winner.catalogue</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="action_winner_catalogue" id="sale_menu_action_winner_catalogue" parent="sale.menu_sales_config" sequence="10"/>
+    </data>
+</odoo>

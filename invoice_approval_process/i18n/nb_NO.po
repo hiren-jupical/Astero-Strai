@@ -1,0 +1,284 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* invoice_approval_process
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-02-08 10:40+0000\n"
+"PO-Revision-Date: 2021-02-08 12:10+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: nb_NO\n"
+"X-Generator: Poedit 2.4.1\n"
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_bank_statement_line__apply_auto_complete_overruling
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_move__apply_auto_complete_overruling
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_payment__apply_auto_complete_overruling
+msgid "Apply Auto Compute Overruling"
+msgstr "Aktiver overstyring av auto-compute"
+
+#. module: invoice_approval_process
+#: model_terms:ir.ui.view,arch_db:invoice_approval_process.account_view_move_form
+msgid "Approval Info"
+msgstr "Godkjennings informasjon"
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_bank_statement_line__approved_director_user_id
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_move__approved_director_user_id
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_payment__approved_director_user_id
+msgid "Approved Director"
+msgstr "Godkjennt av 2. godkjenner"
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_bank_statement_line__approved_manager_user_id
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_move__approved_manager_user_id
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_payment__approved_manager_user_id
+msgid "Approved Manager"
+msgstr "Godkjennt av 1. godkjenner"
+
+#. module: invoice_approval_process
+#: model:ir.model,name:invoice_approval_process.model_res_company
+msgid "Companies"
+msgstr "Firmaer"
+
+#. module: invoice_approval_process
+#: model:ir.model,name:invoice_approval_process.model_res_partner
+msgid "Contact"
+msgstr "Kontakt"
+
+#. module: invoice_approval_process
+#: model_terms:ir.ui.view,arch_db:invoice_approval_process.res_company_view_form
+msgid "Customer Invoice Approval"
+msgstr "Kundefaktura godkjenning"
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_bank_statement_line__customer_triple_approval_enabled
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_move__customer_triple_approval_enabled
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_payment__customer_triple_approval_enabled
+msgid "Customer Triple Approval Enabled"
+msgstr ""
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_bank_statement_line__second_approval_user_id
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_move__second_approval_user_id
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_payment__second_approval_user_id
+#: model_terms:ir.ui.view,arch_db:invoice_approval_process.account_view_move_form
+msgid "Director Approval"
+msgstr "2. godkjenner"
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,field_description:invoice_approval_process.field_res_company__director_approval_amount_customer
+#: model:ir.model.fields,field_description:invoice_approval_process.field_res_company__director_approval_amount_vendor
+msgid "Director Approval Amount"
+msgstr "Beløp 2. godkjenner"
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,field_description:invoice_approval_process.field_res_company__director_approval_user_id_customer
+#: model:ir.model.fields,field_description:invoice_approval_process.field_res_company__director_approval_user_id_vendor
+msgid "Director Approval User"
+msgstr "Default 2. godkjenner"
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_bank_statement_line__director_approved_date
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_move__director_approved_date
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_payment__director_approved_date
+msgid "Director Approved Date"
+msgstr "2. Godkjennt dato"
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_move__display_name
+#: model:ir.model.fields,field_description:invoice_approval_process.field_res_company__display_name
+#: model:ir.model.fields,field_description:invoice_approval_process.field_res_partner__display_name
+msgid "Display Name"
+msgstr "Visningsnavn"
+
+#. module: invoice_approval_process
+#: model:res.groups,name:invoice_approval_process.edit_invoice_approval_level
+msgid "Edit Invoice Approval"
+msgstr "Tilladelse til fakturagodkendelsesmodul"
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,field_description:invoice_approval_process.field_res_company__apply_auto_complete_overruling
+msgid "Enable Auto Complete overruling"
+msgstr "Aktiver automatisk overstyring ved auto-complete på faktura"
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,field_description:invoice_approval_process.field_res_company__enable_customer_triple_approval
+msgid "Enable Customer Invoice Approval"
+msgstr "Aktiver fakturagodkjennelse på kundefaktura"
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,field_description:invoice_approval_process.field_res_company__enable_vendor_triple_approval
+msgid "Enable Vendor Bill Approval"
+msgstr "Aktiver fakturagodkjennelse på leverandørfaktura"
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_bank_statement_line__first_approval
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_move__first_approval
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_payment__first_approval
+msgid "First Approval"
+msgstr "1. godkjenner"
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_move__id
+#: model:ir.model.fields,field_description:invoice_approval_process.field_res_company__id
+#: model:ir.model.fields,field_description:invoice_approval_process.field_res_partner__id
+msgid "ID"
+msgstr ""
+
+#. module: invoice_approval_process
+#: model_terms:ir.ui.view,arch_db:invoice_approval_process.res_company_view_form
+msgid "Invoice Approval Configuration"
+msgstr "Konfigurasjon av fakturagodkjennelse"
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_bank_statement_line__invoice_remark
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_move__invoice_remark
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_payment__invoice_remark
+msgid "Invoice Remarks"
+msgstr "Notat fakturagodkjennelse"
+
+#. module: invoice_approval_process
+#: model_terms:ir.ui.view,arch_db:invoice_approval_process.account_invoice_view_filter
+msgid "Invoices for Director Approval"
+msgstr "Faktura til 2. godkjenner"
+
+#. module: invoice_approval_process
+#: model_terms:ir.ui.view,arch_db:invoice_approval_process.account_invoice_view_filter
+msgid "Invoices for Manager Approval"
+msgstr "Faktura til 1. godkjenner"
+
+#. module: invoice_approval_process
+#: model:ir.model,name:invoice_approval_process.model_account_move
+msgid "Journal Entry"
+msgstr "Journalregistrering"
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_move____last_update
+#: model:ir.model.fields,field_description:invoice_approval_process.field_res_company____last_update
+#: model:ir.model.fields,field_description:invoice_approval_process.field_res_partner____last_update
+msgid "Last Modified on"
+msgstr "Sist endret"
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_bank_statement_line__first_approval_user_id
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_move__first_approval_user_id
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_payment__first_approval_user_id
+#: model_terms:ir.ui.view,arch_db:invoice_approval_process.account_view_move_form
+msgid "Manager Approval"
+msgstr "1. godkjenner"
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,field_description:invoice_approval_process.field_res_company__manager_approval_amount_customer
+#: model:ir.model.fields,field_description:invoice_approval_process.field_res_company__manager_approval_amount_vendor
+msgid "Manager Approval Amount"
+msgstr "Beløp 1. godkjenner"
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,field_description:invoice_approval_process.field_res_company__manager_approval_user_id_customer
+#: model:ir.model.fields,field_description:invoice_approval_process.field_res_company__manager_approval_user_id_vendor
+msgid "Manager Approval User"
+msgstr "Default 1. godkjenner"
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_bank_statement_line__manger_approved_date
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_move__manger_approved_date
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_payment__manger_approved_date
+msgid "Manager Approved Date"
+msgstr "1. Godkjennt dato"
+
+#. module: invoice_approval_process
+#: model_terms:ir.ui.view,arch_db:invoice_approval_process.account_invoice_view_filter
+msgid "My Invoices to Approve"
+msgstr "Fakturaer jeg skal godkjenne"
+
+#. module: invoice_approval_process
+#: code:addons/invoice_approval_process/models/account_move.py:0
+#, python-format
+msgid "Only %s can give Director Approval to this invoice."
+msgstr "Kun %s kan sette 2. godkjenner på denne faktura"
+
+#. module: invoice_approval_process
+#: code:addons/invoice_approval_process/models/account_move.py:0
+#, python-format
+msgid "Only %s can give Manager Approval to this invoice."
+msgstr "Kun %s kan sette 1. godkjenner på denne faktura"
+
+#. module: invoice_approval_process
+#: code:addons/invoice_approval_process/models/account_move.py:0
+#, python-format
+msgid "Please set Approve by Manager."
+msgstr "Angiv 1. godkjenner"
+
+#. module: invoice_approval_process
+#: code:addons/invoice_approval_process/models/account_move.py:0
+#, python-format
+msgid "Please set the Director approval user same as login user."
+msgstr ""
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,field_description:invoice_approval_process.field_res_partner__purchase_responsible_person_id
+#: model:ir.model.fields,field_description:invoice_approval_process.field_res_users__purchase_responsible_person_id
+msgid "Purchase Responsible Person"
+msgstr "Ansvarlig fakturagodkjenner"
+
+#. module: invoice_approval_process
+#: model_terms:ir.ui.view,arch_db:invoice_approval_process.account_view_move_form
+msgid "Reconsider"
+msgstr "Revurder"
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_bank_statement_line__second_approval
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_move__second_approval
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_payment__second_approval
+msgid "Second Approval"
+msgstr ""
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,help:invoice_approval_process.field_res_partner__purchase_responsible_person_id
+#: model:ir.model.fields,help:invoice_approval_process.field_res_users__purchase_responsible_person_id
+msgid "Select a Purchase Resposible Person"
+msgstr "Velg en ansvarlig fakturagodkjenner"
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,field_description:invoice_approval_process.field_res_company__skip_director_approval_customer
+#: model:ir.model.fields,field_description:invoice_approval_process.field_res_company__skip_director_approval_vendor
+msgid "Skip Director Approval"
+msgstr "Hopp over 2. godkjenner"
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,field_description:invoice_approval_process.field_res_company__skip_manager_approval_customer
+#: model:ir.model.fields,field_description:invoice_approval_process.field_res_company__skip_manager_approval_vendor
+msgid "Skip Manager Approval"
+msgstr "Hopp over 1. godkjenner"
+
+#. module: invoice_approval_process
+#: model_terms:ir.ui.view,arch_db:invoice_approval_process.res_company_view_form
+msgid "Vendor Invoice Approval"
+msgstr "Leverandørfaktura godkjenning"
+
+#. module: invoice_approval_process
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_bank_statement_line__vendor_triple_approval_enabled
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_move__vendor_triple_approval_enabled
+#: model:ir.model.fields,field_description:invoice_approval_process.field_account_payment__vendor_triple_approval_enabled
+msgid "Vendor Triple Approval Enabled"
+msgstr "Leverandørfaktura godkjenning aktivert"
+
+#. module: invoice_approval_process
+#: code:addons/invoice_approval_process/models/account_move.py:0
+#, python-format
+msgid "Without Director approval you cannot validate invoice."
+msgstr "Uten 2. godkjenner kann denne faktura ikke bekreftes"
+
+#. module: invoice_approval_process
+#: code:addons/invoice_approval_process/models/account_move.py:0
+#, python-format
+msgid "Without Manager approval you cannot validate invoice."
+msgstr "Uten 2. godkjenner kann denne faktura ikke bekreftes"

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="purchase_order_form_inherit_flyt_peppol_order" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit.flyt.peppol.order</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='fiscal_position_id']" position="after">
+                <field name="edi_send_purchase_order_confirmation" invisible="1" />
+                <field name="peppol_edi" invisible="not edi_send_purchase_order_confirmation"/>
+                <field name="order_response_code"/>
+            </xpath>
+            <xpath expr="//page[@name='products']//tree//field[@name='product_qty']" position="after">
+                <field name="confirmed_qty" optional="hide"/>
+            </xpath>
+            <xpath expr="//page[@name='products']//tree//field[@name='price_unit']" position="after">
+                <field name="confirmed_price" optional="hide"/>
+                <field name="price_qty_mismatch" invisible="1"/>
+            </xpath>
+            <xpath expr="//page[@name='products']//tree//field[@name='date_planned']" position="after">
+                <field name="line_status_code" optional="hide"/>
+                <field name="note" optional="hide"/>
+            </xpath>
+            <xpath expr="//page[@name='products']//tree" position="attributes">
+                <attribute name="decoration-success">line_status_code == '1'</attribute>
+                <attribute name="decoration-warning">line_status_code == '3'</attribute>
+                <attribute name="decoration-danger">line_status_code == '7' or price_qty_mismatch</attribute>
+            </xpath>
+            <xpath expr="//label[@for='date_approve']" position="before">
+                <field name="edi_order_confirmation_validated"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="purchase_order_kpi_tree_view_inherit_flyt_peppol_order" model="ir.ui.view">
+        <field name="name">purchase.order.kpi.tree.view.inherit.flyt.peppol.order</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="before">
+                <field name="peppol_edi" widget="badge" decoration-success="peppol_edi == 'processed'" decoration-warning="peppol_edi == 'unprocessed'" optional="show"></field>
+                <field name="order_response_code" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

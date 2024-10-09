@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+ 
+    <!-- Form View -->
+    <record model="ir.ui.view" id="trunk_endpoint">
+        <field name="name">Trunk Endpoint</field>
+        <field name="model">trunk.endpoint</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string='Trunk Mode' >
+                <label for="name"/>
+                <field name="name"/>
+                <label for="endpoint"/>
+                <field name="endpoint"/>
+            </form>
+        </field>
+    </record>
+</odoo>

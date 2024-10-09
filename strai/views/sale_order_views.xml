@@ -1,0 +1,556 @@
+<odoo>
+    <data>
+        <!-- Form-view for Orders -->
+        <record id="sale_order_trunk_form_view" model="ir.ui.view">
+            <field name="name">sale.order.trunk.form.view</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="replace">
+                    <field name="partner_id" 
+                    domain="['&amp;', ('type', 'in', ['contact', 'private']), '|', '|', ('ref', '=ilike', (company_id + '/%')), ('is_builder', '=', False), ('category_id', '!=', False)]" 
+                        readonly="state in ['sale', 'done', 'cancel'] or winner_reference != False" 
+                        options="{'no_open': True}"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_invoice_id']" position="replace">
+                    <field name="partner_invoice_id" 
+                    domain="['&amp;', ('type', 'in', ['contact', 'private']), '|', '|', ('ref', '=ilike', (company_id + '/%')), ('is_builder', '=', False), ('category_id', '!=', False)]" 
+                        readonly="state in ['sale', 'done', 'cancel'] or winner_reference != False"
+                        />
+                </xpath>
+<!--                <xpath expr="//field[@name='partner_shipping_id']" position="replace">-->
+<!--                    <field name="partner_shipping_id" domain="['|', '|', ('parent_id.ref', '=ilike', str(company_id) + '/%'), ('parent_id.is_builder', '=', True), ('parent_id.category_id', '!=', False)]" groups="sale.group_delivery_invoice_address" widget="res_partner_many2one" context="{'default_type':'delivery', 'show_address': 1}" options='{"always_reload": True}' attrs="{'readonly': ['&amp;', '|', ('state', 'in', ['sale', 'done', 'cancel']), ('company_id', '!=', 1), ('winner_reference', '!=', False)]}"/>-->
+<!--                </xpath>-->
+                <xpath expr="//field[@name='partner_shipping_id']" position="attributes">
+                <attribute name="context">{'default_type':'delivery', 'show_address': 1}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                    <field name="remarks" string="Kundemerknad"/>
+                    <!--<field name="store_user_name" readonly="is_production" invisible="not is_production"/>-->
+                    <field name="store_responsible_id" string="Store Responsible" widget="many2one_avatar" invisible="not is_strai_store or not is_production" required="is_strai_store and is_production" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True, 'no_create': True}"/>
+                    <field name="sales_rep_affiliated_store" string="Selger fri forhandler" invisible="is_strai_store or not is_production" required="not is_strai_store and is_production" options="{'no_quick_create':True,'no_create_edit':True,'no_create': True}"/>
+                    <label for="winner_reference"/>
+                    <div class='o_row' id="winner_ref_row">
+                        <field name="winner_reference" readonly="1"/>
+                        <button name="open_winner_wizard" type="object" icon="fa-edit" class="oe_edit_only oe_link" help="Click here to input new winner reference" invisible="state == 'sale'" title="Winnerref"/>
+                    </div>
+                    <field name="winner_file_id" invisible='1'/>
+                    <field name="is_production" invisible='1'/>
+                    <field name="is_strai_store" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="before">
+                    <field name="position" string="Pos" optional="show" readonly="1"/>
+                    <field name="no_supplier_warning" column_invisible="True"/>
+                    <button name="action_supplier_warning" type="object" string="Supplier Warning!" icon="fa-exclamation-triangle" help="There is no supplier for this product. Click here to add one manually" invisible="no_supplier_warning != True"/>
+                </xpath>
+                <xpath expr="//button[@id='action_confirm']" position="after">
+                    <button name="action_sign" id="action_sign"
+                            string="Sign" class="btn-primary" type="object"
+                            invisible="state not in ['sent', 'draft'] or is_production"/>
+                    <button name="action_create_po" string="Fetch Margin Contribution" class="btn-primary" type="object" invisible="state not in ['sent', 'draft'] or order_type not in ['standard','campaign']"/>       
+                </xpath>
+                <xpath expr="//button[@id='action_confirm']" position="attributes">
+                    <attribute name="invisible">state not in ['signed', 'reserved']</attribute>
+                </xpath>
+                <xpath expr="//field[@name='tag_ids']" position="after">
+                    <field name="date_signed"/>
+                    <field name="store_name"/>
+                    <field name="store_user_email"/>
+                </xpath>
+                <xpath expr="//field[@name='state']" position="attributes">
+                    <attribute name="statusbar_visible">draft,sent,signed,reserved,sale</attribute>
+                </xpath>
+                <xpath expr="//button[@id='send_by_email']" position="attributes">
+                    <attribute name="invisible">state not in ('sent', 'sale', 'signed', 'reserved')"</attribute>
+                </xpath>
+
+                <xpath expr="//button[@name='action_cancel']" position="attributes">
+                    <attribute name="invisible">state not in ['draft', 'sent', 'sale', 'signed', 'reserved'] or id == False</attribute>
+                </xpath>
+                <!-- Control the behavior of advance payment / forskuddsbetaling -->
+                <!-- <xpath expr="//button[@name='291'][2]" position="attributes">
+                    <attribute name="invisible">state in ['draft', 'sent', 'cancel'] or invoice_status in ['to invoice', 'invoiced']</attribute>
+                </xpath> -->
+                <xpath expr="//div[@id='winner_ref_row']" position="after">
+                    <field name="winner_last_updated" readonly="1" string=" "/>
+                    <field name="winner_reference_production" readonly="1" invisible="not is_production"/>
+                    <field name="external_sales_order_no" readonly="(company_id != 7 or sales_project_id == False or eno == False) and (company_id != 1)"/>
+                    <field name="winner_production_last_updated" readonly="1" string=" " invisible="not is_production" />  <!-- ENO for Krs. Otherwise readonly=1 -->
+                    <field name="product_type_id" widget="selection" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True, 'no_create': True}" force_save="1" readonly="state in ['sale', 'done', 'cancel']" required="state not in ['draft', 'cancel']"/>
+                </xpath>
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="delivery_phone_one" required="state in ['sale'] and order_type != 'exhibit'" readonly="state in ['sale', 'done', 'cancel']"/>
+                    <field name="delivery_phone_two" readonly="state in ['sale', 'done', 'cancel']"/>
+                    <field name="delivery_method_id" string="Delivery Method" options="{'no_create_edit': True, 'no_create':True, 'no_open':True}" required="state in ['sale'] and order_type != 'exhibit'" readonly="state in ['sale', 'done', 'cancel']"/>
+                    <field name="delivery_type_id" string="Type of Car" options="{'no_create_edit': True, 'no_create':True, 'no_open':True}" required="state in ['sale'] and order_type != 'exhibit'" readonly="state in ['sale', 'done', 'cancel']"/>
+                    <field name="delivery_floor_id" string="Floor" options="{'no_create_edit': True, 'no_create':True, 'no_open':True}" required="state in ['sale'] and order_type != 'exhibit'" readonly="state in ['sale', 'done', 'cancel']"/>
+                    <field name="info_transport" readonly="state in ['sale', 'done', 'cancel'] and not is_production"/>
+                    <field name="info_production" readonly="state in ['sale', 'done', 'cancel'] and not is_production"/>
+                    <field name="info_accounting" readonly="state in ['sale', 'done', 'cancel'] and not is_production"/>
+                    <field name="order_attachment_ids" class="oe_inline" invisible="1"/>
+                    <widget name="drag_drop_attachements" class="oe_inline" colspan="2" string="Slipp vedlegg her"/>
+                    <widget name="Drag_AttachmentPreview" class="oe_inline" colspan="2" string=""/>
+                </xpath>
+                <xpath expr="//form/sheet/group/group/div[hasclass('o_td_label')][2]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="////form/sheet/group/group/field[@name='date_order'][2]" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_quotation_send'][1]" position="replace">
+                </xpath>
+                <xpath expr="//button[@name='action_preview_sale_order']" position="replace">
+                </xpath>
+                <xpath expr="//button[@name='action_sign']" position="before">
+                    <button name="action_quotation_send" string="Send by Email" type="object" invisible="state != 'draft' or is_production"/>
+                </xpath>
+                <xpath expr="//button[@name='action_confirm'][2]" position="replace">
+                    <button name="action_confirm" string="Confirm" class="btn-primary" type="object" invisible="state not in ['sent', 'draft']"/>
+                </xpath>
+                <xpath expr="//field[@name='payment_term_id']" position="attributes">
+                    <attribute name="readonly">state in ['sale']</attribute>
+                </xpath>
+                <xpath expr="//field[@name='analytic_account_id']" position="attributes">
+                    <attribute name="readonly">state in ['sale']</attribute>
+                </xpath>
+                <xpath expr="//group[@name='sales_person']/field[@name='company_id']" position="attributes">
+                    <attribute name="readonly">state in ['sale']</attribute>
+                    <attribute name="required">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="readonly">state not in ['sale', 'done', 'draft', 'signed', 'reserved']</attribute>
+                </xpath>
+                <xpath expr="//field[@name='team_id']" position="attributes">
+                    <attribute name="readonly">state in ['sale']</attribute>
+                </xpath>
+<!--                <xpath expr="//field[@name='user_id']" position="after">-->
+<!--                    <field name="is_production" invisible='1'/>-->
+<!--                    <field name="store_responsible_id" string="Store Responsible" widget="many2one_avatar_user"-->
+<!--                           attrs="{'invisible':['|',('sales_rep_affiliated_store', '!=', False),('is_production', '=', False)]}" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True, 'no_create': True}"/>-->
+<!--                    <field name="sales_rep_affiliated_store" string="Selger fri forhandler"-->
+<!--                           attrs="{'invisible':['|',('store_responsible_id', '!=', False),('is_production', '=', False)], 'required':['&amp;',('store_responsible_id', '=', False),('is_production', '=', True)]}" -->
+<!--                           options="{'no_quick_create':True,'no_create_edit':True,'no_create': True}"/>-->
+<!--                </xpath>-->
+                <xpath expr="//button[@name='payment_action_capture']" position="before">
+                    <button name="action_assign" string="Assign to me" class="btn-primary" type="object" invisible="user_id or not is_production"/>
+                </xpath>
+                <xpath expr="//field[@name='pricelist_id']" position="attributes">
+                    <attribute name="readonly">not is_production</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree" position="attributes">
+                    <attribute name="limit">500</attribute>
+                </xpath>
+                <xpath expr="//field[@name='product_type_id']" position="before">
+                    <field name="warranty_selected" widget="Radio" invisible="not is_production"/>
+                    <field name="warranty_identification" invisible="not warranty_selected or not is_production" readonly="state in ['sale', 'done', 'cancel']"/>
+                    <field name="store_warranty_order" invisible="not store_warranty_order and is_production" readonly="is_production"/>
+                </xpath>
+                <xpath expr="//field[@name='product_type_id']" position="after">
+                    <field name="sale_to_self" invisible="1"/>
+                    <field name="order_type" readonly="state in ['sale', 'done', 'cancel'] or sale_to_self" required="state in ['sale', 'signed', 'reserved', 'sale']"/>
+                    <field name="builder_partner_id" options="{'no_create': True}" invisible="order_type != 'builder'" required="order_type == 'builder'" readonly="state in ['sale', 'done', 'cancel']"/>
+                    <field name="builder_agreement_situation" invisible="order_type != 'builder'" required="order_type == 'builder'"/>
+                    <field name="this_day" invisible="1"/>
+                    <field name="price_campaign_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True, 'no_create': True}" invisible="order_type != 'campaign'" required="order_type == 'campaign'" readonly="state in ['sale', 'done', 'cancel']"  string="Kampanje"/>
+                </xpath>
+                <xpath expr="//field[@name='analytic_account_id']" position="attributes">
+                    <attribute name="readonly">invoice_count != 0 and state == 'sale'</attribute>
+                    <attribute name="required">state in ['signed', 'reserved', 'sale', 'done']</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="before">
+                    <field name="catalogue_price" readonly="1"/>
+                </xpath>
+                <xpath expr="//field[@name='validity_date']" position="before">
+                    <field name="is_production" invisible="1"/>
+                    <field name="booked_by_store" invisible="1"/>
+                    <field name="is_confirmed" invisible='1'/>
+                    <field name="capacity" invisible='1'/>
+                    <field name="date_order"/>
+                    <field name="order_change_cutoff_date" widget="custom_datetime" readonly="1" invisible="is_production"/>
+                    <field name="capacity_booking_deadline" string="Production Booking Deadline" force-save='1' help="The Deadline to confirm this sale order. If the sale order is confirmed after this date, it might get delayed duo to lack of production capacity"/>
+                    <label for="production_date" invisible="1"/>
+                    <field name="production_date" widget="custom_datetime" invisible="1" readonly="state in ['done', 'sale', 'cancel', 'reserved']" required="state not in ['draft', 'cancel']"/>
+                    <field name="commitment_date" widget="custom_datetime" required="state not in ['draft', 'cancel'] and order_type != 'exhibit'" readonly="booked_by_store == True" string="Forsendelse fra fabrikk"/>
+                    <button name="fake_button" string="Irrelevant Capacity" colspan="2" class="oe_stat_button invisible capacity_button" icon="fa-industry" invisible="not is_confirmed and reservation_needed"/>
+                    <button name="fake_button" string="Good Capacity" class="oe_stat_button text-success capacity_button" icon="fa-industry" invisible="is_confirmed or capacity != 'good' or not reservation_needed"/>
+                    <button name="fake_button" string="Low Capacity" class="oe_stat_button text-warning capacity_button" icon="fa-industry" invisible="is_confirmed or capacity != 'low' or not reservation_needed"/>
+                    <button name="fake_button" string="No Capacity"  class="oe_stat_button text-danger capacity_button" icon="fa-industry" invisible="is_confirmed or capacity != 'no_capacity' or not reservation_needed"/>
+                    <div invisible="is_confirmed or capacity not in ['good', 'low', 'no_capacity'] or not reservation_needed"/>
+                </xpath>
+                <xpath expr="//field[@name='validity_date']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@id='action_confirm']" position="before">
+                    <field name='reservation_needed' invisible='1'/>
+                    <button name="action_delete_reservation" string="Delete Reservation" confirm="You are deleting the reserved manufacturing time slot for this order. Do you want to continue?" type="object" invisible="state != 'reserved'"/>
+                    <button name="action_capacity" string="Reserve" confirm="You are now booking a time slot for manufacturing some or all of the products on this sale order. Do you want to continue?" type="object" class="btn-primary" invisible="booked_by_store or is_confirmed or not reservation_needed or capacity == 'no_capacity' or state != 'signed'"/>
+                </xpath>
+                <xpath expr="//field[@name='order_type']" position="after">
+                    <field name="sales_project_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True, 'no_create': True}" required="order_type == 'project'" invisible="order_type != 'project'"/>
+                    <field name="apartment_id" options="{'no_create_edit': True, 'no_create':True, 'no_open':True, 'no_quick_create':True}" domain="[('sales_project_id', '=', sales_project_id)]" invisible="sales_project_id == False" required="order_type == 'project'"/>
+                    <field name="eno" readonly="state in ['sale', 'done', 'cancel']" invisible="apartment_id == False"/>
+                </xpath>
+                <!-- always show opportunity in sale order, also without debug mode  -->
+                <xpath expr="//field[@name='opportunity_id']" position="replace">
+                    <field name="opportunity_id" />
+                </xpath>
+                <xpath expr="//form/sheet/notebook/page[@name='other_information']/group/group/field[@name='invoice_status']" position="after">
+                    <label for="invoiced_manually" string=" " decoration-bf="1" invisible="invoice_status in ['invoiced', 'no'] or state in ['draft', 'sent', 'signed', 'reserved', 'cancel']"/>
+                    <div class="o-row">
+                        <button name="invoiced_manually" string="FAKTURERT MANUELT" class="btn btn-primary" invisible="invoice_status in ['invoiced', 'no'] or state in ['draft', 'sent', 'signed', 'reserved', 'cancel']" confirm="Er fakturaer på både kontraktssum og tilvalg tilknyttet denne ordren opprettet manuelt og sendt kundene? Ved å bekrefte dette anses ordren som fullstendig fakturert, og ordren forsvinner fra faktureringslisten" type="object"/>
+                    </div>
+                </xpath>
+                <xpath expr="//field[@name='incoterm']" position="after">
+                    <field name="productionline_date" string="Produksjonsdato"/>
+                    <field name="logistic_send_date" string="Transportdato"/>
+                </xpath>
+                <!-- <xpath expr="//group[@name='sales_person']/field[@name='client_order_ref']" position="after">
+                    <field name="client_order_ref"/>
+                </xpath>
+                <xpath expr="//field[@name='remarks']" position="after">
+                    <field name="client_ref" optional="show"/>
+                </xpath>
+                 <xpath expr="//group[@name='sales_person']/field[@name='client_order_ref']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath> -->
+                <xpath expr="//field[@name='order_line']" position="before">
+                    <group name="tax_totals_second" col="6" class="mt-2 mt-md-0">
+                        <group colspan="4" name="sale_total">
+                            <field name="tax_totals" widget="account-tax-totals-field" nolabel="1" colspan="2" readonly="1"/>
+                        </group>
+                         <group class="oe_subtotal_footer oe_right" colspan="2" invisible="order_type not in ['standard', 'campaign']">
+                            <field name="strai_revenue" colspan="2"/>
+                            <field name="strai_cost" colspan="2"/>
+                            <field name="strai_contribution_margin" colspan="2"/>
+                            <field name="strai_contribution" colspan="2"/>
+                        </group>
+                        <div class="clearfix"/>
+                    </group>
+                </xpath>
+                <xpath expr="//button[@id='send_by_email']" position="attributes">
+                    <attribute name="invisible">state not in ('sent', 'sale') or is_production</attribute>
+                  </xpath>
+                <xpath expr="//button[@name='action_quotation_send'][1]" position="attributes">
+                  <attribute name="invisible">state != 'draft' or is_production</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- List-view for Saleorders -->
+        <record id="sale_order_extended_view_order_tree" model="ir.ui.view">
+            <field name="name">sale.order.tree</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="product_type_id" optional="hide"/>
+                </xpath>
+                <xpath expr="//field[@name='activity_ids']" position="after">
+                    <field name="apartment_id" string="Apartment" optional="hide"/>
+                </xpath>
+                <xpath expr="//field[@name='activity_ids']" position="after">
+                    <field name="order_type" optional="hide"/>
+                    <field name="price_campaign_id" string="Campaign" optional="hide"/>
+                    <field name="orderinfo1" optional="show"/>
+                    <field name="orderinfo2" optional="show"/>
+                    <field name="store_user_name" optional="hide"/>
+                    <field name="partner_shipping_id" optional="hide"/>
+                    <field name="eno" optional="hide"/>
+                    <field name="order_change_cutoff_date" widget="custom_datetime" optional="hide"/>
+                    <field name="capacity_booking_deadline" optional="hide"/>
+                    <field name="productionline_date" optional="hide"/>
+                    <field name="logistic_send_date" optional="hide"/>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="builder_partner_id" optional="hide"/>
+                </xpath>
+                <xpath expr="//field[@name='activity_ids']" position="before">
+                    <field name="winner_reference" optional="show"/>
+                    <field name="winner_reference_production" optional="show"/>
+<!--                    <field name="client_order_ref" optional="show"/>-->
+                    <field name="client_ref" optional="show"/>
+                    <field name="builder_agreement_situation" optional="show"/>
+                </xpath>
+                <xpath expr="//field[@name='team_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='expected_date']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_order']" position="after">
+                    <field name="company_id" position="move"/>
+                    <field name="partner_id" position="move"/>
+                    <field name="client_order_ref" position="move"/>
+                    <field name="store_user_name" position="move"/>
+                    <field name="partner_shipping_id" position="move"/>
+                    <field name="winner_reference" position="move"/>
+                    <field name="winner_reference_production" position="move"/>
+                    <field name="product_type_id" position="move"/>
+                    <field name="order_type" position="move"/>
+                    <field name="orderinfo1" position="move"/>
+                    <field name="orderinfo2" position="move"/>
+                    <field name="eno" position="move"/>
+                    <field name="order_change_cutoff_date" position="move"/>
+                    <field name="capacity_booking_deadline" position="move"/>
+                    <field name="commitment_date" position="move"/>
+                    <field name="productionline_date" position="move"/>
+                    <field name="logistic_send_date" position="move"/>
+                    <field name="user_id" position="move"/>
+                    <field name="activity_ids" position="move"/>
+                    <field name="tag_ids" position="move"/>
+                    <field name="amount_untaxed" position="move"/>
+                    <field name="amount_tax" position="move"/>
+                    <field name="amount_total" position="move"/>
+                    <field name="state" position="move"/>
+                    <field name="invoice_status" position="move"/>
+                </xpath>
+                <xpath expr="//field[@name='commitment_date']" position="attributes">
+                    <attribute name="widget">date</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Layout changes to quotation view -->
+        <record id="sale_order_extended_view_quotation_tree" model="ir.ui.view">
+            <field name="name">sale.order.extended.view.quotation.tree</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='team_id']" position="attributes">
+                    <attribute name='column_invisible'>1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="attributes">
+                    <attribute name='column_invisible'>1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name='team_id' optional="hide"/>
+                </xpath>
+               <!-- <xpath expr="//field[@name='team_id']" position="after">
+                    <field name='company_id' optional="hide" groups="base.group_multi_company" readonly="1"/>
+                </xpath> -->
+                <xpath expr="//field[@name='invoice_status']" position="replace">
+                    <field name='invoice_status' optional="hide"/>
+                </xpath>
+                <xpath expr="//field[@name='tag_ids']" position="replace">
+                    <field name='tag_ids' widget="many2many_tags" options="{'color_field': 'color'}"/>
+                </xpath>
+                <xpath expr="//field[@name='amount_untaxed']" position="replace">
+                    <field name='amount_untaxed' optional="hide"/>
+                </xpath>
+                <xpath expr="//field[@name='amount_tax']" position="replace">
+                    <field name='amount_tax' optional="hide"/>
+                </xpath>
+                <xpath expr="//field[@name='state']" position="attributes">
+                    <attribute name='optional'/>
+                </xpath>
+                <xpath expr="//field[@name='amount_total']" position="attributes">
+                    <attribute name='optional'/>
+                </xpath>
+                <xpath expr="//field[@name='warehouse_id']" position="attributes">
+                    <attribute name='optional'/>
+                    <attribute name='column_invisible'>1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='activity_ids']" position="attributes">
+                    <attribute name='optional'/>
+                </xpath>
+<!--                <xpath expr="//field[@name='orderinfo1']" position="attributes">-->
+<!--                    <attribute name='optional'>show</attribute>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//field[@name='orderinfo2']" position="attributes">-->
+<!--                    <attribute name='optional'>show</attribute>-->
+<!--                </xpath>-->
+                <xpath expr="//field[@name='activity_ids']" position="attributes">
+                    <attribute name='optional'/>
+                </xpath>
+                <xpath expr="//field[@name='state']" position="attributes">
+                    <attribute name="decoration-danger">state == 'reserved'</attribute>
+                    <attribute name="decoration-warning">state == 'signed'</attribute>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="winner_reference" optional="show"/>
+                    <field name="winner_reference_production" optional="hide"/>
+                </xpath>
+                <xpath expr="//field[@name='winner_reference_production']" position="after">
+<!--                    <field name="client_order_ref" optional="hide"/>-->
+                    <field name='product_type_id' optional="show"/>
+                    <field name='order_type' optional="show"/>
+                    <field name='builder_partner_id' optional="hide"/>
+                    <field name='sales_project_id' optional="hide"/>
+                    <field name='apartment_id' optional="hide"/>
+                    <field name='eno' optional="hide"/>
+<!--                    <field name='exhibit_analytic_account_id' optional="hide"/>-->
+                    <field name="price_campaign_id" string="Campaign" optional="hide"/>
+                    <field name="builder_agreement_situation" optional="hide"/>
+                    <field name="productionline_date" string="Produksjonsdato" optional="hide"/>
+                    <field name="logistic_send_date" string="Transportdato" optional="hide"/>
+                </xpath>
+                 <xpath expr="//field[@name='eno']" position="after">
+                    <field name="store_user_name" optional="hide"/>
+                    <field name="partner_shipping_id" optional="hide"/>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="is_confirmed" column_invisible='1' optional="hide"/>
+                    <field name="capacity" column_invisible='1' optional="hide"/>
+                </xpath>
+                <xpath expr="//field[@name='commitment_date']" position="before">
+<!--                    <field name="order_change_cutoff_date" widget="custom_datetime"/>-->
+                    <field name="capacity_booking_deadline" optional="show" widget="custom_datetime"/>
+                </xpath>
+                <xpath expr="//field[@name='commitment_date']" position="attributes">
+                    <attribute name='optional'>show</attribute>
+                    <attribute name='widget'>custom_datetime</attribute>
+                </xpath>
+<!--                <xpath expr="//field[@name='commitment_date']" position="before">-->
+<!--                    <field name='reservation_needed' invisible='1'/>-->
+<!--                    <button name="action_capacity" confirm="You are now booking a time slot for maufacturing some or all of the products on this sale order. Do you want to continue?" type="object" class="oe_stat_button text-success" icon="fa-industry" attrs="{'invisible':['|','|',('is_confirmed','=', True), ('capacity','!=', 'good'), ('reservation_needed','=', False)]}"/>-->
+<!--                    <button name="action_capacity" confirm="You are now booking a time slot for maufacturing some or all of the products on this sale order. Do you want to continue?" type="object" class="oe_stat_button text-warning" icon="fa-industry" attrs="{'invisible':['|','|',('is_confirmed','=', True), ('capacity','!=', 'low'), ('reservation_needed','=', False)]}"/>-->
+<!--                    <button name="action_no_capacity" type="object" class="oe_stat_button text-danger" icon="fa-industry" attrs="{'invisible':['|','|',('is_confirmed','=', True), ('capacity','!=', 'no_capacity'), ('reservation_needed','=', False),]}"/>-->
+<!--                </xpath>-->
+                <xpath expr="//field[@name='activity_ids']" position="after">
+                    <field name="is_production" column_invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Inherit Sale Quotation Tree View And Modify It -->
+        <record id="view_quotation_tree_with_onboarding_inherited" model="ir.ui.view">
+            <field name="name">view.quotation.tree.with.onboarding.inherited</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='team_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='expected_date']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='commitment_date']" position="attributes">
+                    <attribute name="optional">show</attribute>
+                </xpath>
+                <xpath expr="field[@name='order_type']" position="after">
+                    <field name="orderinfo1" optional="show"/>
+                    <field name="orderinfo2" optional="show"/>
+                    <field name="order_change_cutoff_date" invisible="0" widget="custom_datetime" optional="show"/>
+                </xpath>
+                <xpath expr="//field[@name='create_date']" position="after">
+                    <field name="company_id" position="move"/>
+                    <field name="partner_id" position="move"/>
+                    <field name="client_order_ref" position="move"/>
+                    <field name="store_user_name" position="move" optional="hide"/>
+                    <field name="partner_shipping_id" position="move" optional="hide"/>
+                    <field name="winner_reference" position="move"/>
+                    <field name="winner_reference_production" position="move"/>
+                    <field name="product_type_id" position="move" optional="show"/>
+                    <field name="order_type" position="move" optional="show"/>
+                    <field name="orderinfo1" position="move" optional="show"/>
+                    <field name="orderinfo2" position="move" optional="show"/>
+                    <field name="eno" position="move"/>
+                    <field name="order_change_cutoff_date" position="move" widget="custom_datetime"/>
+                    <field name="capacity_booking_deadline" position="move"/>
+                    <field name="productionline_date" position="move"/>
+                    <field name="commitment_date" position="move"/>
+                    <field name="logistic_send_date" position="move"/>
+                    <field name="user_id" position="move"/>
+                    <field name="activity_ids" position="move"/>
+                    <field name="tag_ids" position="move"/>
+                    <field name="amount_untaxed" position="move"/>
+                    <field name="amount_tax" position="move"/>
+                    <field name="amount_total" position="move"/>
+                    <field name="state" position="move"/>
+                    <field name="invoice_status" position="move"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="sale_order_view_search_strai" model="ir.ui.view">
+            <field name="name">sale.order.search.inherit.quotation.strai</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="priority">100</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="replace">
+                    <field name="name" filter_domain="['|', '|', '|','|', ('name', 'ilike', self), ('client_order_ref', 'ilike', self), ('partner_id', 'child_of', self), ('external_sales_order_no', 'ilike', self),('winner_reference', 'ilike', self)]"/>
+                </xpath>
+                <!-- <xpath expr="//filter[@name='sales']" position="before">
+                    <filter name="signed_filter" string="Signert" domain="[('state','=','signed')]"/>
+                    <filter name="reserved_filter" string="Reservert" domain="[('state','=','reserved')]"/>
+                </xpath> -->
+                <!-- <xpath expr="//filter[@name='sales']" position="after">
+                    <filter name="capacity_booking_deadline_filter" string="Salgsoppfølging" domain="['&amp;',('state','in',('draft','sent','signed','reserved')),('eno','!=',True)]"/>
+                </xpath> -->
+                <xpath expr="//search" position="inside">
+                    <field name="winner_reference"/>
+                    <field name="winner_reference_production"/>
+                    <field name="store_user_name" optional="show"/>
+                    <field name="partner_shipping_id" optional="show"/>
+                    <field name="external_sales_order_no" optional="show"/>
+                    <field name="price_campaign_id" optional="show"/>
+                </xpath>
+                <xpath expr="//filter[@name='my_quotation']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//filter[@name='draft']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//filter[@name='sales']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="sale.action_orders" model="ir.actions.act_window">
+            <field name="domain">[('state', 'not in', ('draft', 'sent', 'signed', 'reserved', 'cancel'))]</field>
+        </record>
+
+        <record id="campaign_sales_orders_view" model="ir.actions.act_window">
+            <field name="name">Campaign Sale Orders</field>
+            <field name="res_model">sale.order</field>
+            <field name="domain">[('order_type', '=', 'campaign')]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="sale.view_order_tree"/>
+            <field name="target">current</field>
+        </record>
+
+        <menuitem action="campaign_sales_orders_view" id="menu_campaign_sale_orders" name="Campaign Sale Orders" parent="sale.menu_sale_report" sequence="3"/>
+
+        <record id="sale_quotation_tree_dashboard_strai" model="ir.ui.view">
+            <field name="name">sale.quotation.tree.dashboard</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="js_class">sale_dashboard_list</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="sale_order_tree_dashboard_strai" model="ir.ui.view">
+            <field name="name">sale.order.tree.dashboard</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="js_class">sale_dashboard_list</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="sale_order_search_strai" model="ir.ui.view">
+            <field name="name">sale.order.search.strai</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <filter name="my_orders" string="My Orders" domain="[('user_id', '=', uid)]"/>
+                    <separator/>
+                    <filter name="all_draft_and_sent" string="Tilbud" domain="[('state', 'in', ['draft', 'sent'])]" />
+                    <filter name="all_signed_and_reserved" string="Signert/Reservert" domain="[('state', 'in', ['signed', 'reserved'])]" />
+                    <filter name="all_sale_invoice_status_no" string="Til levering" domain="[('state', '=', 'sale'), ('invoice_status', '=', 'no')]"/>
+                    <filter name="all_to_invoice" string="Til fakturering" domain="[('invoice_status', '=', 'to invoice')]"/>
+                </xpath>
+                <xpath expr="//filter[@name='my_sale_orders_filter']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,29 @@
+<odoo>
+    <data>
+        <record id="purchase_order_edi_trunk_form_view" model="ir.ui.view">
+            <field name="name">purchase.order.edi.trunk.form.view</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='button_cancel']" position="after">
+                    <button name="send_edi_trunk" type="object" string="Send EDI"
+                            invisible="not edi_status or state not in ['purchase', 'done']"/>
+                </xpath>
+                <xpath expr="//group/field[@name='fiscal_position_id']" position="after">
+                    <!--                    <group name="edi_trunk" string="Innkjøp EDI" attrs="{'invisible': [('edi_status', '=', False)]}" colspan="2">-->
+                    <field name="edi_color"
+                           options="{'no_quick_create':True,'no_create_edit':True}"
+                           invisible="not edi_status"/>
+                    <!--                    <field name="edi_comment" attrs="{'invisible': [('edi_status', '=', False)]}"/>-->
+                    <field name="edi_status" invisible="not edi_status"/>
+                    <field name="edi_sent_timestamp" invisible="not edi_status"/>
+                    <!--                    </group>-->
+                </xpath>
+                <xpath expr="//page[@name='products']//field[@name='order_line']//tree//field[@name='name']" position="after">
+                    <field name="edi_status" invisible="1" optional="hide"/>
+                    <field name="edi_comment" invisible="not edi_status" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

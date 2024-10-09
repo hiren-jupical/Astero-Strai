@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- View -->
+        <record model="ir.ui.view" id="winner_ref_wizard">
+            <field name="name">Winner Reference</field>
+            <field name="model">winner.ref.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string='Winner Reference'>
+                    <sheet>
+                        <group>
+                            <field name="winner_reference" readonly="1"/>
+                            <field name="environment"/>
+                            <field name="alternative"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button type="object" name="save" string="Save" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_open_winner_ref_wizard" model="ir.actions.act_window">
+            <field name="name">action_open_winner_ref_wizard</field>
+            <field name="res_model">winner.ref.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

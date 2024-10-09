@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="flyt_account_report_difference.AccountReportLineCustomizable"
+       t-inherit="account_reports.AccountReportLineCustomizable" t-inherit-mode="extension">
+        <xpath expr="//t[contains(@t-if, 'controller.lineHasGrowthComparisonData(props.lineIndex)')]//td[contains(@t-att-class, 'growthComparisonClasses')]"
+               position="before">
+            <td t-att-class="growthComparisonClasses">
+                <t t-out="props.line.value_diff"/>
+            </td>
+        </xpath>
+    </t>
+</templates>

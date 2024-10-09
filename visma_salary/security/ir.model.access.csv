@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_strai_visma_import_user,strai.visma.import,model_strai_visma_import,sales_team.group_sale_salesman,1,1,1,1
+access_strai_visma_import_link_user,strai.visma.import.link,model_strai_visma_import_link,sales_team.group_sale_salesman,1,1,1,1
+visma_salary.access_cron_visma_salary,access_cron_visma_salary,visma_salary.model_cron_visma_salary,base.group_user,1,1,1,1

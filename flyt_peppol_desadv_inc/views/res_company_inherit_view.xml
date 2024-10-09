@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+
+		<record id="res_company_inherit_view_flyt_peppol_desadv_inc" model="ir.ui.view">
+			<field name="name">res.company.inherit.view.flyt.peppol.desadv.inc</field>
+			<field name="model">res.company</field>
+			<field name="inherit_id" ref="base.view_company_form"/>
+			<field name="arch" type="xml">
+				<field name="color" position="before">
+					<field name="dispatch_tracking_url" />
+				</field>
+			</field>
+		</record>
+
+	</data>
+</odoo>

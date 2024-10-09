@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="strai_exhibiton_analytics_purchase_order_form_inherit" model="ir.ui.view">
+        <field name="name">strai.exhibiton.analytics.purchase.order.form.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_type']" position="after">
+                <field name="exhibit_analytic_account_id" options="{'no_create': True}"  domain="[('account_analytic_type','=', 'exhibition')]" invisible="order_type != 'exhibit' or is_production" required="order_type == 'exhibit' and not is_production" readonly="state in ('sale', 'done', 'cancel')"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <!-- Adds additional fields to Lost Reason wizard -->
+        <record id="crm_lead_lost_competitor_view_form" model="ir.ui.view">
+            <field name="name">crm.lead.lost.reason.form</field>
+            <field name="model">crm.lead.lost</field>
+            <field name="inherit_id" ref="crm.crm_lead_lost_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='lost_reason_id']" position="before">
+                    <field name="competitor_id"/>
+                </xpath>
+                <xpath expr="//field[@name='lost_reason_id']" position="attributes">
+                    <attribute name="widget">radio</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

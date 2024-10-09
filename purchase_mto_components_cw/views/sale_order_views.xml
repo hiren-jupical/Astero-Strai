@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+        <record id="sale_order_purchase_mto_components_cw_form_view" model="ir.ui.view">
+            <field name="name">sale.order.purchase_mto_components_cw.form.view</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_cancel']" position="after">
+                    <field name="purchase_mto_created" invisible="1"/>
+                    <button name="purchase_mto_components_cw"
+                            type="object"
+                            string="Innkjøp MTO"
+                            invisible="state not in ['sale', 'done'] or not external_sales_order_no or not is_production or purchase_mto_created"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

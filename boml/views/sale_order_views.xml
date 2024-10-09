@@ -1,0 +1,12 @@
+<odoo>
+    <record id="boml_sale_order_form_view" model="ir.ui.view">
+        <field name="name">boml.sale.order.form.view</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="strai.sale_order_trunk_form_view"/>  <!-- inherits strai module sale_order_views -->
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='winner_last_updated']" position="after">
+                <field name="boml_last_updated" readonly="1" string=" " invisible="not is_production"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

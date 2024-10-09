@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="view_move_form_inherit" model="ir.ui.view">
+        <field name="name">account.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="get_data_from_trunk" string="Trunk OCR"
+                        invisible="move_type in ('out_invoice', 'out_refund')" class="oe_highlight"
+                        type="object" context="{'show_total_amount':True, 'recursive_onchanges': False}"
+                        groups="account.group_account_invoice"/>
+            </xpath>
+            <!-- Show Odoo OCR output in a not-so-easy-to-find place, for investigations / troubleshooting -->
+            <!-- Does not work on odoo.sh for some reason. Works perfectly localhost. Placing it somewhere else until it works -->
+<!--            <xpath expr="//page[@id='other_tab']//field[@name='extract_remote_id']" position="after">-->
+<!--                <field name="odoo_ocr_result" groups="base.group_no_one"-->
+<!--                       attrs="{'invisible': ['|', ('move_type', 'not in', ('in_invoice', 'in_refund', 'out_invoice', 'out_refund')), ('extract_state', 'in', ('no_extract_requested', 'not_enough_credit'))]}"/>-->
+<!--            </xpath>-->
+            <xpath expr="//page[@id='other_tab']//field[@name='auto_validated']" position="after">
+                <field name="odoo_ocr_result" groups="base.group_no_one"
+                        invisible="move_type not in ('in_invoice', 'in_refund', 'out_invoice', 'out_refund') or extract_state in ('no_extract_requested', 'not_enough_credit')" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,12 @@
+<odoo>
+<!--    <record id="trunk_stock_route_form_view_inherit" model="ir.ui.view">-->
+<!--        <field name="name">trunk.route.form.view</field>-->
+<!--        <field name="model">stock.route</field>-->
+<!--        <field name="inherit_id" ref="stock.stock_route_form_view"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//field[@name='company_id']" position="after">-->
+<!--                <field name="code"/>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+</odoo>

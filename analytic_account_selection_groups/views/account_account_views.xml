@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_account_form_extend" model="ir.ui.view">
+            <field name="name">account.account.form.extend</field>
+            <field name="model">account.account</field>
+            <field name="inherit_id" ref="account.view_account_form"/>
+            <field name="arch" type="xml">
+                <field name="tag_ids" position="after">
+                    <field name="analytic_account_id" widget="many2many_tags"/>
+                    <field name="analytic_account_mandatory"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

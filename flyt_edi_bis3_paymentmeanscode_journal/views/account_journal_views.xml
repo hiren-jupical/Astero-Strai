@@ -1,0 +1,14 @@
+<odoo>
+    <record id="account_journal_form_inherit" model="ir.ui.view">
+        <field name="name">flyt_edi_bis3_paymentmeanscode_journal.account.journal.form.inherit</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='advanced_settings']/group" position="inside">
+                <group name="edi_bis3_payment_means_code" string="EDI BIS3 Payment Means Code">
+                    <field name="payment_means_code_edi_bis3"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

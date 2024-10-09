@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="trunk_queue_tree_view" model="ir.ui.view">
+        <field name="name">trunk.queue.tree.view</field>
+        <field name="model">trunk.queue</field>
+        <field name="arch" type="xml">
+            <tree string="Trunk Queue" default_order="create_date desc">
+                <field name="task_type"/>
+                <field name="create_date"/>
+                <field name="res_model"/>
+                <field name="res_id"/>
+                <field name="res_name"/>
+                <field name="status"/>
+                <field name="attempt_count"/>
+                <field name="completed_timestamp"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="trunk_queue_search" model="ir.ui.view">
+        <field name="name">trunk.queue.search</field>
+        <field name="model">trunk.queue</field>
+        <field name="arch" type="xml">
+            <search string="Trunk queue">
+                <field name="task_type"/>
+                <field name="res_model"/>
+                <field name="res_id"/>
+                <field name="res_name"/>
+                <field name="status"/>
+                <group>
+                    <filter name="task_type" context="{'group_by': 'task_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="trunk_queue_action" model="ir.actions.act_window">
+        <field name="name">Trunk Queue</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">trunk.queue</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="trunk_queue_menu"
+              name="Trunk Queue"
+              parent="base.menu_automation"
+              sequence="50"
+              action="trunk_queue_action"/>
+</odoo>

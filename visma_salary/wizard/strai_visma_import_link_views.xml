@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="strai_visma_import_link_form" model="ir.ui.view">
+        <field name="name">Strai Visma Import</field>
+        <field name="model">strai.visma.import.link</field>
+        <field name="arch" type="xml">
+            <form string="Strai Visma Import">
+                <separator colspan="4" string="Your file is ready"/>
+                <field name="file_name" invisible="1"/>
+                <field name="report_file" filename='file_name'/>
+            </form>
+        </field>
+    </record>
+
+</odoo>

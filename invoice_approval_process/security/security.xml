@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="edit_invoice_approval_level" model="res.groups">
+        <field name="name">Edit Invoice Approval</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+    <record id="adjust_bill_after_approval_level" model="res.groups">
+        <field name="name">Adjust bill after approval</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+    <record id="group_can_confirm_bill" model="res.groups">
+        <field name="name">Can confirm bill</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+    </record>
+</odoo>

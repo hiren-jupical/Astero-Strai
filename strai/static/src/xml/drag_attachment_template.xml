@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE template [
+    <!ENTITY ndash "&#x2013;">
+]>
+<template>
+    <!-- STRAI ATTACHMENT DROP AREA TEMPLATE -->
+    <t t-name="strai.drag_drop_attachment">
+        <div class="o_drag_area d-none">
+            <div class="o_drag_area_content">
+                <div>
+                    <i class="fa fa-file-o fa-5x" aria-hidden="true" />
+                </div>
+                <div>
+                    <h2>Drop your files here</h2>
+                </div>
+            </div>
+        </div>
+    </t>
+    &lt;!&ndash;ATTACHMENT WIDGET TEMPLATE &ndash;&gt;
+    <t t-name="DragAttachmentWidget" owl="1">
+        <div>
+            <div class="drag_attachment" t-on-dragover="_add_drag_attachment_area" t-on-drop="_on_drop_attachment" style="max-width:100px;">
+                <span>
+                    <i class="fa fa-paperclip" role="img" aria-label="Attachments"/>
+                    <span t-esc="props.string" />
+                </span>
+            </div>
+        </div>
+        <div>
+            <div class="drag_attachment_preview_area mt-4">
+            </div>
+        </div>
+    </t>
+
+    <t t-name="DragAttachmentPreview">
+        <div class="drag_attachment_preview_area mt-4">
+            <t t-foreach="widget.file_uploaded" t-as="attachment" t-key="attachment_upload">
+                <div t-attf-class="drag_attachment_preview {{attachment['attachment_id']}}">
+                    <div t-attf-class="o_attachment o_attachment_many2many">
+                        <div class="o_attachment_wrap d-inline-flex">
+                            <div class="o_image_box float-start">
+                                <a t-att-href="attachment['url']" t-att-title="'Download ' + attachment['file']" aria-label="Download" target="_blank">
+                                    <span class="o_image o_hover" t-att-data-ext="attachment['file']" role="img"/>
+                                </a>
+                            </div>
+                            <div class="caption">
+                                <a class="ml4" t-att-href="attachment['url']" t-att-title="'Download ' + attachment['file']" target="_blank"><t t-esc="attachment['file']"/></a>
+                            </div>
+                            <div class="o_attachment_delete o_uploaded_attachment_delete" t-att-data-id="attachment['attachment_id']"><span class="text-white" role="img" aria-label="Delete" title="Delete">×</span></div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </div>
+    </t>
+
+    <t t-name="FormDragAttachmentPreview" owl="1">
+        <div class="drag_attachment_preview_main">
+            <t t-foreach="_attachment_ids" t-as="attachment" t-key="attachment_index">
+                <div t-attf-class="drag_attachment_preview {{attachment['id']}}">
+                    <div t-attf-class="o_attachment o_attachment_many2many">
+                        <div class="o_attachment_wrap d-inline-flex">
+                            <div class="o_image_box float-start">
+                                <a t-attf-href="/web/content/#{attachment['id']}?download=true" t-att-title="'Download ' + attachment['name']" aria-label="Download" target="_blank">
+                                    <span class="o_image o_hover" t-att-data-ext="attachment['name']" role="img"/>
+                                </a>
+                            </div>
+                            <div class="caption">
+                                <a class="ml4" t-attf-href="/web/content/#{attachment['id']}?download=true" t-att-title="'Download ' + attachment['file']" target="_blank"><t t-esc="attachment['name']"/></a>
+                            </div>
+                            <div t-on-click="_onDeletepreviewattachment" class="o_attachment_delete" t-att-data-id="attachment['id']"><span class="text-white" role="img" aria-label="Delete" title="Delete">×</span></div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </div>
+    </t>
+
+</template>

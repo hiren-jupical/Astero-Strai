@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+   <!-- MAIL COMPOSE MESSGAE FORM VIEW INHERIT -->
+    <record model="ir.ui.view" id="email_compose_message_wizard_form_inherit">
+        <field name="name">mail.compose.message.form.mass_mailing</field>
+        <field name="model">mail.compose.message</field>
+        <field name="inherit_id" ref="mail.email_compose_message_wizard_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='body']" position="after">
+                <div style="max-width: 200px;">
+                    <widget name="drag_drop_attachements" string='Attachments'/>
+                </div>
+            </xpath>
+            <xpath expr="//button[3]" position="replace">
+                <button type="object" name="action_cancel" string="Cancel" class="btn-secondary" data-hotkey="z"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

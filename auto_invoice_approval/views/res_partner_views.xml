@@ -1,0 +1,23 @@
+<odoo>
+    <record id="view_partner_form_inherit_auto_approval_accounting" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.auto.approval.accounting</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="account.view_partner_property_form"/>
+        <field name="arch" type="xml">
+            <!-- Locate the Accounting tab and add a new group within it -->
+            <xpath expr="//page[@name='accounting']" position="inside">
+                <group>
+                    <group string="Auto Invoice Approval">
+                        <field name="auto_approval_enabled"/>
+                        <field name="auto_approval_max_residual_total"/>
+                        <field name="auto_approval_max_amount"/>
+                        <field name="auto_approval_validate_kid"/>
+                        <field name="auto_approval_require_received_products"/>
+                        <field name="auto_approval_validate_account"/>
+                        <field name="auto_approval_auto_post"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,30 @@
+<odoo>
+    <data>
+        <record id="product_supplierinfo_vendor_product_management_form" model="ir.ui.view">
+            <field name="name">product.supplierinfo.vendor.product.management.form</field>
+            <field name="model">product.supplierinfo</field>
+            <field name="inherit_id" ref="product.product_supplierinfo_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="vendor_stock_control" invisible="1"/>
+                    <field name="stock_level" invisible="not vendor_stock_control"/>
+                    <field name="deprecated" invisible="not vendor_stock_control"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- extended info in the product => purchase => supplier/product code list -->
+        <record id="product_supplier_supplierinfo_vendor_product_management_tree" model="ir.ui.view">
+            <field name="name">product.supplier.supplierinfo.vendor.product.management.tree</field>
+            <field name="model">product.supplierinfo</field>
+            <field name="inherit_id" ref="purchase.product_supplierinfo_tree_view2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='price']" position="before">
+                    <field name="vendor_stock_control" column_invisible="1"/>
+                    <field name="stock_level" optional="show" readonly="1" column_invisible="not parent.vendor_stock_control"/>
+                    <field name="deprecated" optional="show" readonly="1" column_invisible="not parent.vendor_stock_control"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

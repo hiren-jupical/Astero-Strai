@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_sale" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.delivery.dhl.sale</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='account_vendor_bills']" position="after">
+                <h2>Trunk Configuration</h2>
+                <div class="row mt16 o_settings_container" id="trunk_settings">
+                    <div class="col-12 col-lg-6 o_setting_box" id="account_trunk_settings">
+                        <div class="o_setting_left_pane">
+                            <field name="enable_trunk"/>
+                        </div>
+                        <div class="o_setting_right_pane" id="digitalizetrunkocr">
+                            <label for="enable_trunk"/>
+                            <div class="text-muted">
+                                Digitalize your scanned or PDF vendor bills with Trunk system
+                            </div>
+<!--                            <div attrs="{'invisible': [('enable_trunk', '=', False)]}">-->
+<!--                                <div class="content-group mt16">-->
+<!--                                    <label for="trunk_url" class="o_light_label"/>-->
+<!--                                    <field name="trunk_url" widget="url"/>-->
+<!--                                </div>-->
+<!--                                <div class="content-group">-->
+<!--                                    <label for="trunk_api_key" class="o_light_label"/>-->
+<!--                                    <field name="trunk_api_key"/>-->
+<!--                                </div>-->
+<!--                                <div class="content-group">-->
+<!--                                    <label for="trunk_api_client" class="o_light_label"/>-->
+<!--                                    <field name="trunk_api_client"/>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

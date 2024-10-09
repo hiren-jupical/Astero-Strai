@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- commented out this one. Necessary? Give errors -->
+        <!--        <record id="res_config_settings_view_form" model="ir.ui.view">-->
+        <!--            <field name="name">res.config.settings.view.form.inherit.delivery</field>-->
+        <!--            <field name="model">res.config.settings</field>-->
+        <!--            <field name="inherit_id" ref="sale.res_config_settings_view_form"/>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <xpath expr="//div[@id='delivery_carrier']" position="after">-->
+        <!--                    <div class="content-group">-->
+        <!--                        <div class="mt8" attrs="{'invisible': [('module_delivery','=',False)]}">-->
+        <!--                            <button name="%(sale_order_extended_info.action_delivery_type_form)d" icon="fa-arrow-right" type="action" string="Shipping Types" class="btn-link"/>-->
+        <!--                        </div>-->
+        <!--                        <div class="mt8">-->
+        <!--                            <button name="%(sale_order_extended_info.action_delivery_floor_form)d" icon="fa-arrow-right" type="action" string="Delivery Floor" class="btn-link"/>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </xpath>-->
+        <!--            </field>-->
+        <!--        </record>-->
+
+        <!-- Cannot figure out what this does. It seems to neither be present in Odoo 14 or 15. Odoo 15 does not accept the view. -->
+        <!-- <record id="res_config_settings_view_form" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.delivery</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='133']" position="after">
+                    <div class="content-group">
+                        <div class="mt8">
+                            <button name="%(sale_order_extended_info.action_product_type_form)d" icon="fa-arrow-right" type="action" string="Product Types" class="btn-link"/>
+                        </div>
+                    </div>
+                 </xpath>
+            </field>
+        </record> -->
+
+        <record id="res_config_settings_view_form" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.trunk</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='trunk']" position="inside">
+                    <div class="col-12 col-lg-6 o_setting_box" id="trunk_default_production_product">
+                        <div class="o_setting_left_pane">
+                            <label for="production_product_category"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <field name="production_product_category"/>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box" id="trunk_roundoff_product">
+                        <div class="o_setting_left_pane">
+                            <label for="round_off_product"/>
+                        </div>
+                        <div class="o_settingt_right_pane">
+                            <field name="round_off_product"/>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="capacity_booking_settings_view_form" model="ir.ui.view">
+            <field name="name">capacity.booking.configurator.settings.view.form</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//block[@id='connectors_setting_container']" position="after">
+                    <h2>Capacity booking</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <div class="text-muted">
+                                    The product category used in the capacity booking module as the products that has to be produced.
+                                </div>
+                                <div>
+                                    <label for="capacity_booking_product_category"/>
+                                    <field name="capacity_booking_product_category"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="res_config_settings_builder" model="ir.ui.view">
+            <field name="name">res.config.settings.builder.view.form</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//block[@id='pricing_setting_container']" position="after">
+                    <h2>Proff</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <div class="mt16">
+                                    <span class="col-lg-3">
+                                        <label for="builder_special_pricelist" string="Spesial prisliste"/>:
+                                        <field name="builder_special_pricelist" options="{'no_create': True, 'no_create_edit':True}"/>
+                                    </span>
+                                </div>
+                                <div class="text-muted">
+                                    Prislisten som blir satt når rabattmatrisen på proffkunden avviker fra standard prisliste
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="res_config_settings_form_view_inherit_strai" model="ir.ui.view">
+            <field name="name">res.config.form.view.inherit.strai</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//block[@id='invoicing_settings']//setting[@id='show_sale_receipts']" position="after">
+                    <div class="col-12 col-lg-6 o_setting_box" id="default_warranty_product">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Reklamasjon</span>
+                            <div class="text-muted">
+                                Reklamasjonsprodukt
+                            </div>
+                            <div class="text-muted">
+                                <field name="warranty_product_id"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box" id="default_pass_through_billing_product">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Viderefakturering</span>
+                            <div class="text-muted">
+                                Viderefaktureringsprodukt
+                            </div>
+                            <div class="text-muted">
+                                <field name="pass_through_billing_product_id"/>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

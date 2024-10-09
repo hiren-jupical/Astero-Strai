@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_picking_extended_info_form_view" model="ir.ui.view">
+        <field name="name">stock.picking.extended.info.form.view</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="buyer_id"/>
+            </xpath>
+            <xpath expr="//sheet/notebook/page[@name='operations']/field/tree/field[@name='product_id']" position="before">
+                <field name="picking_code" column_invisible="1"/>
+                <field name="position" column_invisible="parent.picking_type_code == 'incoming'"/>
+                <field name="position_in" column_invisible="parent.picking_type_code == 'outgoing'"/>
+            </xpath>
+            <xpath expr="//field[@name='move_ids_without_package']/tree" position="attributes">
+                <attribute name="limit">500</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

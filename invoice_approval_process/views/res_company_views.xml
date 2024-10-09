@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--adding setting to the res company form view-->
+    <record id="res_company_view_form" model="ir.ui.view">
+        <field name="name">res.company.view.form.inherit.invoice_approval_process</field>
+        <field name="model">res.company</field>
+        <field name="priority" eval="100"/>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Invoice Approval Configuration" name="invoice_approval_process_configuration">
+                    <group>
+                        <field name="enable_vendor_triple_approval"/>
+                    </group>
+                    <group>
+                        <group name="invoice_approval_vendor" string="Vendor Invoice Approval" invisible="not enable_vendor_triple_approval">
+                            <field name="director_approval_amount_vendor" />
+                            <field name="manager_approval_user_id_vendor"/>
+                            <field name="director_approval_user_id_vendor"/>
+                            <field name="po_responsible_person"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

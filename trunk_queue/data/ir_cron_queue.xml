@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_cron_trunk_queue_process_new_sale_order_production" model="ir.cron">
+        <field name="name">Process Trunk queue: new sale order production</field>
+        <field name="model_id" ref="model_trunk_queue"/>
+        <field name="state">code</field>
+        <field name="code">model.process_new_sale_order_production()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">15</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(DateTime.now() + timedelta(minutes=15)).strftime('%Y-%m-%d %H:%M:%S')"/>
+        <field name="doall" eval="False"/>
+        <field name="priority">500</field>
+    </record>
+
+    <record id="ir_cron_trunk_queue_process_confirmed_purchase_order_production" model="ir.cron">
+        <field name="name">Process Trunk queue: confirmed purchase order production</field>
+        <field name="model_id" ref="model_trunk_queue"/>
+        <field name="state">code</field>
+        <field name="code">model.process_confirmed_purchase_order_production()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">15</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(DateTime.now() + timedelta(minutes=15)).strftime('%Y-%m-%d %H:%M:%S')"/>
+        <field name="doall" eval="False"/>
+        <field name="priority">500</field>
+    </record>
+</odoo>

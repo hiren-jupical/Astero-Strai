@@ -1,0 +1,24 @@
+<odoo>
+    <data>
+        <record id="partner_purchase_edi_form_inherit" model="ir.ui.view">
+            <field name="name">partner.purchase.edi.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='purchase']" position="inside">
+                    <field name="purchase_edi" string="Innkjøp EDI"/>
+                    <field name="purchase_edi_endpoint" string="Innkjøp EDI URL"
+                           invisible="not purchase_edi"
+                           required="purchase_edi"/>
+                    <label for="purchase_edi_colors" string="Tilgjengelige farger" colspan="2" invisible="not purchase_edi"/>
+                    <field name="purchase_edi_colors" invisible="not purchase_edi" colspan="2" nolabel="1">
+                        <tree>
+                            <field name="color" string="Farge"/>
+                            <field name="itemcode" string="Produktkode"/>
+                        </tree>
+                    </field>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,10 @@
+.capacity_button {
+    padding: 0;
+    min-width: 200px;
+    text-align: left;
+}
+
+
+.drag_attachment {
+	width: 100%;
+}

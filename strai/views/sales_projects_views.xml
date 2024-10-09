@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--                         View window                      -->
+        <record id="view_project_sales_task_search_form" model="ir.ui.view">
+            <field name="name">sales.project.task.search.form</field>
+            <field name="model">sales.projects.apartment</field>
+            <field name="arch" type="xml">
+                <search string="Apartments">
+                    <field name="name" string="Aparment"/>
+                    <field string="Project" name="display_project_id"/>
+                    <field name="partner_id" operator="child_of"/>
+                    <filter string="My Tasks" name="my_tasks" domain="[('user_ids', 'in', uid)]"/>
+                    <filter string="Unassigned" name="unassigned" domain="[('user_ids', '=', False)]"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Project" name="project" context="{'group_by': 'sales_project_id'}"/>
+                        <filter string="Customer" name="customer" context="{'group_by': 'partner_id'}"/>
+                        <filter string="Creation Date" name="group_create_date" context="{'group_by': 'create_date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="act_sales_projects_2_project_apartment_all" model="ir.actions.act_window">
+            <field name="name">Apartments</field>
+            <field name="res_model">sales.projects.apartment</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="domain">[('display_project_id', '=', active_id)]</field>
+            <field name="context">{
+                'default_project_id': active_id,
+                'show_project_update': True,
+                }
+            </field>
+            <field name="search_view_id" ref="strai.view_project_sales_task_search_form"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No apartments found. Let's create one!
+                </p>
+            </field>
+        </record>
+
+        <record id="sales_projects_apartment_tree" model="ir.ui.view">
+            <field name="name">sales.projects.apartment.tree</field>
+            <field name="model">sales.projects.apartment</field>
+            <field name="arch" type="xml">
+                <tree string="Leiligheter" default_order="name asc">
+                    <field name="name"/>
+                    <field name="sales_person_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="sales_projects_view_form_simplified" model="ir.ui.view">
+            <field name="name">sales.projects.view.form.simplified</field>
+            <field name="model">sales.projects</field>
+            <field name="arch" type="xml">
+                <form string="Project">
+                    <sheet string="Project" default_order="name asc">
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" type="action" name="%(act_sales_projects_2_project_apartment_all)d" icon="fa-tasks">
+                                <field string="Apartments In Progress" name="apartment_count" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <group>
+                            <field name="name" string="Project Name" placeholder="e.g. Builder Project B52"/>
+                            <field name="developer_id" required="1" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True, 'no_create': True}"/>
+                            <field name="partner_id"/>
+                            <field name="user_id"/>
+                            <field name="price_deal"/>
+                            <field name="status" required="1"/>
+                            <field name="account_group_id"/>
+                            <field name="company_ids" invisible="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="sales_projects_view_form_simplified_footer" model="ir.ui.view">
+            <field name="name">sales.projects.view.form.simplified</field>
+            <field name="model">sales.projects</field>
+            <field name="inherit_id" ref="strai.sales_projects_view_form_simplified"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <xpath expr="//group" position="after">
+                    <footer>
+                        <button string="Create" name="action_view_sales_projects_apartment" type="object" class="btn-primary o_open_tasks" data-hotkey="q"/>
+                        <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                    </footer>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="open_create_sales_projects" model="ir.actions.act_window">
+            <field name="name">Create a Project</field>
+            <field name="res_model">sales.projects</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="sales_projects_view_form_simplified_footer"/>
+            <field name="target">new</field>
+            <field name="context">{"default_allow_billable": 1}</field>
+        </record>
+
+        <record id="sales_projects_view_tree" model="ir.ui.view">
+            <field name="name">sales.projects.tree</field>
+            <field name="model">sales.projects</field>
+            <field name="arch" type="xml">
+                <tree string="Prosjekter">
+                    <field name="name"/>
+                    <field name="developer_id"/>
+                    <field name="partner_id"/>
+                    <field name="user_id"/>
+                    <field name="price_deal"/>
+                    <field name="account_group_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="sales_projects_view_kanban" model="ir.ui.view">
+            <field name="name">sale.projects.view.kanban</field>
+            <field name="model">sales.projects</field>
+            <field name="arch" type="xml">
+                <kanban class="oe_background_grey o_kanban_dashboard o_project_kanban o_emphasize_colors" on_create="strai.open_create_sales_projects" sample="1">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click o_has_icon oe_kanban_content oe_kanban_card">
+                                <div class="o_project_kanban_main ">
+                                    <div class="o_kanban_card_content mw-100">
+                                        <div class="o_kanban_primary_left">
+                                            <div class="o_primary">
+                                                <span class="o_text_overflow">
+                                                    <t t-esc="record.name.value"/>
+                                                </span>
+                                                <span class="o_text_overflow text-muted" t-if="record.partner_id.value">
+                                                    <span class="fa fa-user mr-2" aria-label="Partner" title="Partner"/>
+                                                    <t t-esc="record.partner_id.value"/>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="o_kanban_record_bottom mt-3">
+                                        <div class="oe_kanban_bottom_left">
+                                            <div class="o_project_kanban_boxes">
+                                                <a class="o_project_kanban_box" name="action_view_sales_projects_apartment" type="object">
+                                                    <div>
+                                                        <span>Apartments</span>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="oe_kanban_bottom_right">
+                                            <field name="user_id" widget="many2one_avatar_user" t-if="record.user_id.raw_value"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="action_view_sales_projects_apartment" model="ir.actions.act_window">
+            <field name="name">Apartments</field>
+            <field name="res_model">sales.projects.apartment</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="context">{'search_default_my_tasks': 1}</field>
+            <field name="domain">[('display_project_id', '!=', False)]</field>
+            <field name="search_view_id" ref="strai.view_project_sales_task_search_form"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No apartments found. Let's create one!
+                </p>
+            </field>
+        </record>
+
+        <record id="sales_project_task_view_form" model="ir.ui.view">
+            <field name="name">sales.projects.task.view.forms</field>
+            <field name="model">sales.projects.apartment</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="sales_person_id"/>
+                                <field name="analytic_account_id" readonly="1" string="Analytic Account"/>
+                                <field name="sales_project_id"/>
+                            </group>
+                            <group>
+                                <group>
+                                    <field name="description" placeholder="Add a description..." nolabel="1"/>
+                                </group>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--                        Action window                   -->
+        <record id="action_sales_proejects_view" model="ir.actions.act_window">
+            <field name="name">Prosjekter</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sales.projects</field>
+            <field name="view_mode">tree,kanban,form</field>
+
+        </record>
+
+        <menuitem id="sale_order_menu_inherit"
+                  name="Projects"
+                  parent="sale.sale_menu_root"
+                  sequence="99"
+                  action="action_sales_proejects_view"/>
+    </data>
+</odoo>

@@ -1,0 +1,12 @@
+<odoo>
+    <record id="account_account_mandatory_fields" model="ir.ui.view">
+        <field name="name">account.account.form.mandatory_fields</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='allowed_journal_ids']" position="before">
+                <field name="producttype_ordertype_mandatory"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

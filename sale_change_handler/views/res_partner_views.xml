@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <record id="partner_form_order_sync_inherit" model="ir.ui.view">
+            <field name="name">partner.order.sync.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='is_mto']" position="after">
+                    <field name="order_changes_should_be_synchronized" string="Order changes should be synchronized" groups="base.group_no_one" />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

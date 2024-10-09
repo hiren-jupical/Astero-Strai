@@ -1,0 +1,25 @@
+<odoo>
+    <data>
+        <record id="strai_maintenance_equipment_form_inherit" model="ir.ui.view">
+            <field name="name">strai.maintenance.equipment.form.inherit</field>
+            <field name="model">maintenance.equipment</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='product_information']/group/group/field[@name='partner_id']" position="before">
+                    <field name="manufacturer_partner_id"/>
+                </xpath>
+                <xpath expr="//page[@name='product_information']/group/group/field[@name='model']" position="after">
+                    <field name="production_year"/>
+                </xpath>
+                <xpath expr="//page[@name='product_information']/group/group/field[@name='serial_no']" position="after">
+                    <field name="nominal_power_usage"/>
+                    <field name="air_consumption"/>
+                    <field name="suction"/>
+                    <field name="weight"/>
+                    <field name="total_dimension"/>
+                    <field name="service_and_parts_partner_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

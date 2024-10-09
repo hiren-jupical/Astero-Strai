@@ -1,0 +1,55 @@
+<odoo>
+    <data>
+        <record id="strai_pricelist_form_inherit" model="ir.ui.view">
+            <field name="name">strai.pricelist.form.inherit</field>
+            <field name="model">product.pricelist</field>
+            <field name="inherit_id" ref="product.product_pricelist_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='pricelist_settings']" position="inside">
+                    <field name="order_type"/>
+                    <field name="purchase_pricelist_id"/>
+                    <field name="available_for" invisible="not is_production"/>
+                </xpath>
+                <xpath expr="//field/tree/field[@name='name']" position="after">
+                    <field name="brand_and_series_ids" string="Brand"/>
+                    <field name="series_id" string="Series"/>
+                    <field name="partner_id" string="Main Supplier"/>
+                </xpath>
+                <xpath expr="//page/field[@name='item_ids']/tree[2]" position="attributes">
+                    <attribute name="limit">999</attribute>
+                </xpath>
+                <xpath expr="//page[@name='pricelist_rules']" position="after">
+                    <field name="is_production" invisible="1"/>
+                    <page name="proff_discount_matrix" string="Proff rabattmatrise" invisible="not is_production">
+                        <field name="builder_discount_matrix" nolabel="1">
+                            <tree string="Rabattmatrise">
+                                <field name="product_category_name"/>
+                                <field name="product_brand_id"/>
+                                <field name="product_series_id"/>
+                                <field name="agreement_discount" widget="percentage"/>
+                                <field name="customer_discount_option" widget="percentage"/>
+                                <field name="customer_discount_referral" widget="percentage"/>
+                                <field name="commission_option" widget="percentage"/>
+                                <field name="commission_referral" widget="percentage"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="akustikken_product_pricelist_item_form" model="ir.ui.view">
+            <field name="name">akustikken.product.pricelist.item.form</field>
+            <field name="model">product.pricelist.item</field>
+            <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='categ_id']" position="after">
+                    <field name="brand_id" invisible="applied_on != '4_brands'" required="applied_on == '4_brands'"/>
+                    <field name="brand_series_id" invisible="applied_on != '5_series'"/>
+                    <field name="series_id" invisible="applied_on != '5_series'" required="applied_on == '5_series'" domain="[('product_brand_id', '=', brand_series_id)]"/>
+                    <field name="partner_id" readonly="1" invisible="applied_on not in ('0_product_variant','1_product')" force_save='1'/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

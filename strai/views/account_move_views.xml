@@ -1,0 +1,208 @@
+<odoo>
+    <data>
+        <record id="account_move_form_inherit" model="ir.ui.view">
+            <field name="name">account.move.form.inherit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='button_draft']" position="after">
+                    <field name="warranty_selected" invisible="1"/>
+                    <button name="action_add_complaint" type="object" string="Reklamasjon" invisible="not warranty_selected"/>
+                </xpath>
+                <xpath expr="//group[@id='header_left_group']/label[@for='ref']" position="replace"/>
+                <xpath expr="//group[@id='header_left_group']/field[@name='ref']" position="replace"/>
+                <!--Group 1 START-->
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="domain">['&amp;', ('type', 'in', ['contact', 'private']), '|', '|', ('ref', '=ilike', company_id + '/%'), ('is_builder', '=', False), ('category_id', '!=', False)]</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_shipping_id']" position="replace">
+                    <field name="partner_shipping_id" context="{'default_type':'delivery'}"
+                           domain="['|', '|', ('ref', '=ilike', company_id + '/%'), ('is_builder', '=', False), ('category_id', '!=', False)]"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                    <!-- <field name="remarks" string="Kundemerknad"/> Replaced by the ref field below-->
+                    <label for="ref" string="Kundemerknad" invisible="move_type not in ('out_invoice', 'out_refund')"/>
+                    <label for="ref" string="Fakturanr." invisible="move_type in ('out_invoice', 'out_refund')"/>
+                    <field name="ref" nolabel="1"/>
+                    <field name="store_user_name" readonly="1"/>
+                    <field name="warranty_selected" invisible="move_type not in ('out_invoice', 'out_refund')"/>
+                    <field name="store_warranty_order" invisible="not store_warranty_order" readonly="1"/>
+                </xpath>
+                <xpath expr="//field[@name='ref']" position="after">
+                    <field name="winner_reference" readonly="1" invisible="move_type not in ('out_invoice', 'out_refund')"/>
+                    <field name="payment_reference" position="move"/>
+                </xpath>
+                <xpath expr="//field[@name='payment_reference']" position="after">
+                    <field name="product_type_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True, 'no_create': True}"/>
+                    <field name="order_type"/>
+                    <field name="builder_partner_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True, 'no_create': True}" invisible="order_type != 'builder'" required="order_type == 'builder'" readonly="state in ['posted', 'cancel']"/>
+                    <field name="builder_agreement_situation" invisible="order_type != 'builder'" required="order_type == 'builder'" readonly="state in ['posted', 'cancel']"/>
+                    <field name="price_campaign_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True, 'no_create': True}" invisible="order_type != 'campaign'" required="order_type == 'campaign'" readonly="state in ['posted', 'cancel']" string="Kampanje"/>
+                    <field name="sales_project_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True, 'no_create': True}" required="order_type == 'project'" invisible="order_type != 'project'" readonly="state in ['posted', 'cancel']"/>
+                    <field name="apartment_id" options="{'no_create_edit': True, 'no_create':True, 'no_open':True, 'no_quick_create':True}" domain="[('sales_project_id', '=', sales_project_id)]" invisible="sales_project_id == False" required="order_type == 'project'" readonly="state in ['posted', 'cancel']"/>
+                    <!-- <field name="exhibit_analytic_account_id" options="{'no_create': True}" domain="[('account_analytic_type','=', 'exhibition')]" attrs="{'invisible': [('order_type', '!=', 'exhibit')], 'required': [('order_type', '=', 'exhibit')], 'readonly': [('state', 'in', ['posted', 'cancel'])]}"/>              -->
+                </xpath>
+                <xpath expr="//field[@name='payment_reference']" position="after">
+                    <field name="partner_bank_id" position="move"/>
+                </xpath>
+                <!--Group 1 END-->
+                <!--Group 2 START-->
+                <xpath expr="//field[@name='invoice_payment_term_id']" position="attributes">
+                    <attribute name="options">{'no_create': True}</attribute>
+                    <!--I want to remove/invalidate the "can_create" && "can_write", but that doesn't work apparently <( _ _ )> -->
+                    <!--                    <attribute name="can_create"/>-->
+                    <!--                    <attribute name="can_write"/>-->
+                </xpath>
+                <!--Group 2 END-->
+                <xpath expr="//field[@name='invoice_user_id']" position="replace"/>
+                <xpath expr="//div[@name='journal_div']" position="after">
+                    <field name="invoice_user_id" readonly="state in ['posted', 'cancel']"/>
+                    <field name="pricelist_id" readonly="state in ['posted', 'cancel']"/>
+                    <field name="strai_analytic_account_id" string="Analytisk konto" readonly="state in ['posted', 'cancel']"/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="after">
+                    <field name="purchase_order_qty_received" optional="hide"/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_unit']" position="after">
+                    <field name="price_inc_vat" optional="show"/>
+                    <field name="purchase_order_price_unit" optional="hide"/>
+                    <field name="validated" column_invisible="True"/>
+                    <field name="move_origin_type" column_invisible="True"/>
+                </xpath>
+                <xpath expr="//field[@name='to_check']" position="after">
+                    <field name="auto_validated" readonly="True"/>
+                </xpath>
+                <!-- set color of the line in invoice_line tree that indicates a match between purchase and invoice line -->
+                <xpath expr="//field[@name='invoice_line_ids']/tree" position="attributes">
+                    <attribute name="decoration-danger">move_origin_type=='intercompany' and validated==False and display_type in ['product', False]</attribute>
+                    <attribute name="decoration-success">move_origin_type=='intercompany' and validated==True and display_type in ['product', False]</attribute>
+                </xpath>
+                <xpath expr="//form/sheet/notebook/page[@name='other_info']/group/group/field[@name='company_id']" position="after">
+                    <field name="purchase_ref"/>
+                </xpath>
+                <!-- <xpath expr="//field[@name='invoice_line_ids']/tree" position="attributes">
+                    <attribute name="decoration-danger">purchase_line_id and not validated</attribute>
+                </xpath> -->
+                <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='product_id']" position="before">
+                    <field name="position" optional="hide"/>
+                </xpath>
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='partner_id']" position="after">
+                    <field name="product_type_id" optional="hide"/>
+                </xpath>
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='product_type_id']" position="after">
+                    <field name="order_type" optional="hide"/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']/tree" position="attributes">
+                    <attribute name="limit">500</attribute>
+                </xpath>
+                <xpath expr="//field[@name='line_ids']/tree" position="attributes">
+                    <attribute name="limit">500</attribute>
+                </xpath>
+                <xpath expr="//group[@name='sale_info_group']/field[@name='ref']" position="replace">
+                </xpath>
+                <xpath expr="//group[@name='sale_info_group']/label[@for='ref']" position="replace">
+                </xpath>
+                <xpath expr="//group[@name='accounting_info_group']/field[@name='company_id']" position="after">
+                    <field name="store_name" readonly="1"/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line_ids']" position="before">
+                    <group col="12" class="oe_invoice_lines_tab">
+                        <group colspan="8">
+                        </group>
+                        <!-- Totals (only invoices / receipts) -->
+                        <group colspan="4">
+                            <group class="oe_subtotal_footer oe_right" invisible="move_type not in ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt') or payment_state == 'invoicing_legacy'">
+                                <field name="tax_totals" widget="account-tax-totals-field" nolabel="1" colspan="2" readonly="state != 'draft' or (move_type not in ('in_invoice', 'in_refund', 'in_receipt') and quick_edit_mode == False)"/>
+                                <field name="invoice_payments_widget" colspan="2" nolabel="1" widget="payment"/>
+                                <field name="amount_residual" class="oe_subtotal_footer_separator" invisible="state == 'draft'"/>
+                            </group>
+                        </group>
+                    </group>
+                </xpath>
+                <xpath expr="//header" position="inside">
+                    <button name="action_change_to_warranty_product_id" type="object" string="Selgerfeil"
+                            invisible="state in ('posted','cancel') or move_type not in ('in_invoice','in_refund')"
+                            confirm="Klikk Ok for å legge til fakturalinje for reklamasjonskostnad. Beløp vil automatisk blir oppdatert."/>
+                    <button name="action_change_to_pass_through_billing_product_id" type="object" string="Viderefakturering"
+                            invisible="state in ('posted','cancel') or move_type not in ('in_invoice','in_refund')"
+                            confirm='Klikk Ok for legge til fakturalinje for viderefakturering. Beløp vil automatisk bli oppdatert. Husk å skrive hvem som fakturaen skal viderefaktureres til i "Notat for fakturagodkjenning".'/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_account_move_line_filter_inherit" model="ir.ui.view">
+            <field name="name">account.move.line.search.inherit</field>
+            <field name="model">account.move.line</field>
+            <field name="inherit_id" ref="account.view_account_move_line_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="name" filter_domain="[('name', 'ilike', self)]"/>
+                    <field name="debit"/>
+                    <field name="credit"/>
+                    <field name="amount_currency"/>
+                </xpath>
+                <xpath expr="//filter[@name='group_by_matching']" position="after">
+                    <filter string="Salgsprosjekt" name="sales_project_id_group" domain="[]" context="{'group_by': 'sales_project_id'}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Adds partner bank id in vendor tree -->
+        <!-- applies for both incoming and outgoing invoices -->
+        <record id="account_invoice_tree_inherit_bank" model="ir.ui.view">
+            <field name="name">account.invoice.tree.inherit.bank</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_invoice_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree/field[@name='ref']" position="after">
+                    <field name="partner_bank_id" string="Partner Bank" optional="show"/>
+                    <field name="product_receipt_status" string="Varemottak" optional="show" widget="badge"
+                           decoration-danger="product_receipt_status=='no'"
+                           decoration-warning="product_receipt_status=='partial'"
+                           decoration-success="product_receipt_status=='complete'"
+                           decoration-muted="product_receipt_status=='not_applicable'"
+                           class="text-dark"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- override tree view for outgoing invoices -->
+        <record id="account_out_invoice_tree_inherit" model="ir.ui.view">
+            <field name="name">account.out.invoice.tree.inherit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_out_invoice_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='invoice_date']" position="before">
+                    <field name="product_type_id" string="Produkttype" optional="show"/>
+                    <field name="order_type" string="Ordretype" optional="show"/>
+                    <field name="orderinfo1" optional="show"/>
+                    <field name="orderinfo2" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- override tree view for outgoing creditnotes -->
+        <record id="account_out_creditnote_tree_inherit" model="ir.ui.view">
+            <field name="name">account.out.creditnote.tree.inherit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_out_credit_note_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='invoice_date']" position="before">
+                    <field name="order_type" string="Ordretype" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Edit the account move search -->
+        <record id="account_view_invoice_filter_inherit" model="ir.ui.view">
+            <field name="name">account.view.invoice.filter.inherit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group/filter[@name='salesperson']" position="after">
+                    <filter string="Selger butikk" name="store_user_name" context="{'group_by':'store_user_name'}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

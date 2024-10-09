@@ -1,0 +1,35 @@
+<odoo>
+    <data>
+        <record id="view_crm_strai_kanban" model="ir.ui.view">
+            <field name="name">crm.lead.kanban.strai</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('oe_kanban_details')]" position="replace">
+                    <span>Winner</span>
+                    <field name="winner_alone"/>
+                </xpath>
+                <xpath expr="//div[hasclass('o_kanban_record_subtitle')]" position="replace">
+                    <h6>
+                    <strong><field name="partner_id"/></strong>
+                    </h6>
+                </xpath>
+                <xpath expr="//span[@t-if='record.partner_id.value']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="trunk_crm_lead_view_form" model="ir.ui.view">
+            <field name="name">crm.lead.form</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='day_close']" position="after">
+                    <field name="winner_lead_ref"/>
+                </xpath>
+                <xpath expr="//field[@name='lead_properties']" position="replace"/>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,12 @@
+<odoo>
+    <record id="boml_product_product_form_inherit" model="ir.ui.view">
+        <field name="name">boml.product.product.form.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='uom_po_id']" position="after">
+                <field name="checksum" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

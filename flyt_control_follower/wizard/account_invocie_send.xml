@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="account_move_send_wizard_form_inherit" model="ir.ui.view">
+        <field name="model">account.move.send</field>
+        <field name="inherit_id" ref="account.account_move_send_form" />
+        <field name="arch" type="xml">
+        
+        	<xpath expr="//group[1]/div[1]/span" position="before">
+        		<field name="notify_followers" invisible="not display_mail_composer"/>
+        	</xpath>
+            <xpath expr="//field[@name='mail_partner_ids']" position="before">
+                <span
+                    name="no_followers_text"
+                    invisible="not notify_followers"
+                    style="color: red;"
+                > - Advarsel : Du vil nå sende en epost til alle følgerne av dokumentet, ikke bare de som står nedenfor</span>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

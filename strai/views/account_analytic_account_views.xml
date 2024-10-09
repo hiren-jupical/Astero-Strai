@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_account_analytic_account_form_inherit_exhibition" model="ir.ui.view">
+        <field name="name">analytic.analytic.account.form.inherit</field>
+        <field name="model">account.analytic.account</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>
+        <field name="arch" type="xml">
+             <xpath expr="//field[@name='currency_id']" position="after">
+                <field name="account_analytic_type" widget="selection"/>
+             </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_analytic_line_tree_inherit" model="ir.ui.view">
+        <field name="name">analytic.analytic.line.tree.inherit</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_line_tree"/>
+        <field name="arch" type="xml">
+             <xpath expr="//field[@name='account_id']" position="after">
+                <field name="expected_sales_price" optional="hide"/>
+                <field name="return_from" optional="hide"/>
+                <field name="return_date" optional="hide"/>
+                <field name="note" optional="hide"/>
+             </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_analytic_line_form_inherit" model="ir.ui.view">
+        <field name="name">analytic.analytic.line.form.inherit</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_line_form"/>
+        <field name="arch" type="xml">
+             <xpath expr="//group[@name='analytic_item']/field[@name='company_id']" position="after">
+                <field name="expected_sales_price"/>
+                <field name="return_from"/>
+                <field name="return_date"/>
+                <field name="note"/>
+             </xpath>
+        </field>
+    </record>
+
+</odoo>

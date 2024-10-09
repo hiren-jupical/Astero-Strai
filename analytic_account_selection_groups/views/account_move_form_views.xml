@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_move_form_extend" model="ir.ui.view">
+            <field name="name">view.move.form.extend</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="priority">100</field>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@id='invoice_tab']//tree//field[@name='strai_analytic_account_id']" position="before">
+                    <field name="analytic_account_id" column_invisible="True"/>
+                </xpath>
+                <xpath expr="//page[@id='invoice_tab']//tree//field[@name='strai_analytic_account_id']" position="after">
+                    <field name="make_required_analytic_account_id" column_invisible="True"/>
+                    <field name="account_id" column_invisible="True"/>
+                </xpath>
+                <xpath expr="//page[@id='invoice_tab']//tree//field[@name='strai_analytic_account_id']" position="attributes">
+                    <attribute name="required">make_required_analytic_account_id</attribute>
+                    <attribute name="options">{'no_quick_create':True,'no_create_edit':True,'no_open': True, 'no_create': True}</attribute>
+                    <attribute name="domain">[('id', 'in', analytic_account_id)]</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

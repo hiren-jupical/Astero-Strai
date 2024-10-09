@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+flyt_peppol_desadv_inc.access_dispatch_advice_status,access_dispatch_advice_status,flyt_peppol_desadv_inc.model_dispatch_advice_status,base.group_user,1,1,1,1

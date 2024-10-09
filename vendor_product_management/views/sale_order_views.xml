@@ -1,0 +1,15 @@
+<odoo>
+    <data>
+        <record id="sale_order_form_vendor_stock" model="ir.ui.view">
+            <field name="name">sale.order.form.vendor.stock</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="after">
+                    <field name="vendor_stock_control" column_invisible="1"/>
+                    <field name="vendor_stock_level" optional="show" string="L" widget="integer" invisible="not vendor_stock_control"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

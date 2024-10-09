@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+        <record id="view_picking_form_inherit_flyt_peppol_desadv_inc" model="ir.ui.view">
+            <field name="name">stock.picking.form.inherit.flyt.peppol.desadv.inc</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='product_uom_qty']" position="after">
+                    <field name="confirmed_qty" optional="show"/>
+                </xpath>
+                <xpath expr="//field[@name='move_ids_without_package']/tree/field[last()]" position="after">
+                    <field name="sscc_number" optional="show"/>
+                    <field name="status" optional="show"/>
+                </xpath>
+                <xpath expr="//field[@name='move_ids_without_package']/tree" position="attributes">
+                    <attribute name="decoration-danger">status == 'exception'</attribute>
+                </xpath>
+                <xpath expr="//page[@name='note']" position="after">
+                    <page name="dispatch_advice" string="Dispatch Advice" invisible="picking_type_code != 'incoming'">
+                        <field name="dispatch_advice_ids" readonly="1">
+                            <tree string="Stock Moves" decoration-danger="status == 'exceptions'">
+                                <field name="shipment_number" />
+                                <field name="delivery_date" />
+                                <field name="status" />
+                                <field name="shipment_gross_weight" />
+                                <field name="shipment_gross_volume" />
+                                <field name="tracking_number_link" widget="url"/>
+                            </tree>
+                            <form>
+                                <field name="dispatch_note" readonly="1"/>
+                            </form>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,9 @@
+<odoo>
+    <record id="action_account_report_analytic_type" model="ir.actions.act_window">
+        <field name="name">analytic.report.type</field>
+        <field name="res_model">account.analytic.account</field>
+        <field name="context">{'group_by':['account_analytic_type']}</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_action_report_account_analytic_type" name="Analytic Report Type" action="action_account_report_analytic_type" parent="account.account_reports_management_menu" sequence="9" groups="analytic.group_analytic_accounting"/>
+</odoo>

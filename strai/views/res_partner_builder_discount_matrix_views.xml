@@ -1,0 +1,25 @@
+<odoo>
+    <data>
+        <record id="res_partner_builder_discount_matrix_form_view" model="ir.ui.view">
+            <field name="name">res.partner.builder.discount.matrix.form</field>
+            <field name="model">res.partner.builder.discount.matrix</field>
+            <field name="arch" type="xml">
+                <form string="Rabattmatrise">
+                    <sheet>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="product_category_id"/>
+                            <field name="product_brand_id"/>
+                            <field name="product_series_id"/>
+                            <field name="agreement_discount" widget="percentage"/>
+                            <field name="customer_discount_option" widget="percentage"/>
+                            <field name="customer_discount_referral" widget="percentage"/>
+                            <field name="commission_option" widget="percentage"/>
+                            <field name="commission_referral" widget="percentage"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

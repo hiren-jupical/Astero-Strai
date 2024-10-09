@@ -1,0 +1,37 @@
+<odoo>
+    <data>
+        <record id="strai_maintenance_equipment_request_form_inherit" model="ir.ui.view">
+            <field name="name">strai.maintenance.equipment.request.form.inherit</field>
+            <field name="model">maintenance.request</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_request_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group/field[@name='company_id']" position="after">
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="strai_maintenance_equipment_request_kanban_inherit" model="ir.ui.view">
+            <field name="name">strai.maintenance.equipment.request.kanban.inherit</field>
+            <field name="model">maintenance.request</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_request_view_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//span[@name='schedule_date']" position="after">
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="strai_maintenance_equipment_request_tree_inherit" model="ir.ui.view">
+            <field name="name">strai.maintenance.equipment.request.tree.inherit</field>
+            <field name="model">maintenance.request</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_request_view_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='stage_id']" position="after">
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

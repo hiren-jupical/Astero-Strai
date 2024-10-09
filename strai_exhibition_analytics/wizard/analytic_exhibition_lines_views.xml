@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- View -->
+    <record model="ir.ui.view" id="analytic_exhibition_lines">
+        <field name="name">Exhibiton Product Lines</field>
+        <field name="model">analytic.exhibition.lines</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="analytic_account_lines_ids" nolabel="1">
+                        <tree editable="bottom" no_edit="1" delete="false" create="false" limit="999" default_order="name">
+                            <field name="invoice_id"/>
+                            <field name="name" readonly="1"/>
+                            <field name="unit_amount" readonly="1"/>
+                            <field name="chosen_amount"/>
+                            <control>                                
+                                <create name="add_line_control" string="" class="invisible"/>
+                            </control>
+                        </tree>
+                    </field>
+                </sheet>
+                <footer>
+                    <button type="object" name="add_analytic_account_line" string="Add" class="oe_highlight"/>
+                    <button special="cancel" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_open_exhibiton_lines_wizard" model="ir.actions.act_window">
+        <field name="name">action_open_exhibiton_lines_wizard</field>
+        <field name="res_model">analytic.exhibition.lines</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- <record id="view_exhibiton_lines_search" model="ir.ui.view">                                
+        <field name="name">analytic.exhibition.lines.search</field>                                
+        <field name="model">analytic.exhibition.lines</field>                                
+        <field name="arch" type="xml">                                    
+            <search string="Search contacts">                                        
+                <field name="name"></field>                                        
+                <filter string="By Invoice" domain="[('vat', '!=', '')]" name="has_vat"></filter>                                                                                                         
+            </search>                                
+        </field>                            
+    </record> -->
+
+</odoo>

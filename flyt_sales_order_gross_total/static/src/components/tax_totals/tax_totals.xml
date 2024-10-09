@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="flyt_sales_order_gross_total.gross_total" t-inherit="account.TaxTotalsField" t-inherit-mode="extension" owl="1">
+        <xpath expr="//table[@t-if='totals']/tbody" position="before">
+            <tr t-if="totals.gross_total_name">
+                <td class="o_td_label">
+                    <label class="o_form_label o_tax_total_label" t-esc="totals.gross_total_name"/>
+                </td>
+                <td>
+                    <span t-att-name="totals.formatted_gross_total" style="white-space: nowrap; font-weight: bold;" t-esc="totals.formatted_gross_total"/>
+                </td>
+            </tr>
+        </xpath>
+    </t>
+</templates>

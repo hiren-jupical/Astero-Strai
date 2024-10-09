@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model='ir.ui.view' id='contribution_margin_report_tree'>
+        <field name='name'>contribution.margin.report.tree</field>
+        <field name='model'>contribution.margin.report</field>
+        <field name='arch' type='xml'>
+            <tree string='Contribution Margin Report' editable="bottom">
+                <header>
+                    <button name="action_update_status_checked" type="object" string="Status To Checked"/>
+                    <button name="action_update_status_not_checked" type="object" string="Status To Not Checked"/>
+                </header>
+                <field name='account_id' readonly="1" optional="show"/>
+                <field name='group_id' readonly="1" optional="show"/>
+                <field name="account_analytic_type" readonly="1" optional="show"/>
+                <field name="order_type" readonly="1" optional="hide"/>
+                <field name="user_id" readonly="1" optional="hide"/>
+                <field name="flyt_first_update" readonly="1" optional="show"/>
+                <field name="flyt_last_update" readonly="1" optional="show"/>
+                <field name='status' optional="show"/>
+                <field name='company_id' optional="hide"/>
+                <field name="currency_id" optional="hide"/>
+                <field name='credit' readonly="1" optional="show"/>
+                <field name='debit' readonly="1" optional="show"/>
+                <field name='coverage' optional="show"/>
+                <field name='coverage_percent' optional="show"/>
+                <field name="comment" readonly="0" optional="show"/>
+                <field name='kitchen' optional="hide"/>
+                <field name='kitchen_amount' optional="hide"/>
+                <field name='bath' optional="hide"/>
+                <field name="bath_amount" optional="hide"/>
+                <field name='wardrobe' optional="hide"/>
+                <field name="wardrobe_amount" optional="hide"/>
+                <field name='laundry_room' optional="hide"/>
+                <field name="laundry_room_amount" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- for now we dont need form view may be use in future  -->
+    <record model="ir.ui.view" id="contribution_margin_report_form">
+        <field name="name">contribution.margin.report.form</field>
+        <field name="model">contribution.margin.report</field>
+        <field name="arch" type="xml">
+            <form string="Contribution Margin Report">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="account_id"/>
+                            <field name="credit"/>
+                            <field name="debit"/>
+                            <field name="coverage"/>
+                            <field name="coverage_percent"/>
+                            <field name='company_id' invisible="1"/>
+                        </group>
+
+                        <group>
+                            <field name="status"/>
+                            <field name="kitchen"/>
+                            <field name="bath"/>
+                            <field name="wardrobe"/>
+                            <field name="laundry_room"/>
+                        </group>
+                    </group>
+                    <!-- may be we use it later -->
+                    <!-- <group>
+                        <field name="move_lines_ids">
+                            <tree string="Calculated Lines" editable="bottom">
+                                <field name="product_id"/>
+                                <field name="account_id"/>
+                                <field name="salesperson_id"/>
+                                <field name="analytic_account_id"/>
+                                <field name="price_subtotal"/>
+                                <field name="custom_status" readonly="0"/>
+                                <field name="company_id" optional="hide"/>
+                            </tree>
+                        </field>
+                    </group> -->
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_account_moves_contribution_margin" model="ir.actions.act_window">
+        <field name="name">Contribution Margin Report</field>
+        <field name="res_model">contribution.margin.report</field>
+        <field name="domain">[('account_id.company_id', 'in', allowed_company_ids)]</field>
+        <field name="view_id" ref="contribution_margin_report_tree"/>
+        <field name="view_mode">tree,pivot,graph</field>
+    </record>
+
+    <menuitem id="menu_action_account_moves_contribution_margins" action="action_account_moves_contribution_margin" parent="account.account_reports_management_menu" sequence="25"/>
+
+</odoo>

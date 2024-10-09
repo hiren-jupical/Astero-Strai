@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="account_analytic_account_view_form_inherit_margin" model="ir.ui.view">
+        <field name="name">account.analytic.account.form.inherit.margin</field>
+        <field name="model">account.analytic.account</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <notebook invisible="1">
+                    <page name="contribution_data" string="Contribution Data">
+                        <group>
+                            <field name="contribution_data_ids">
+                                <tree string="Contribution Data">
+                                    <field name="custom_credit"/>
+                                    <field name="custom_debit"/>
+                                    <field name="analytic_account_id"/>
+                                    <field name="custom_status"/>
+                                    <field name="comment"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="analytic.account_analytic_line_action">
+        <field name="context">{'default_account_id': active_id}</field>
+        <field name="domain">[('auto_account_id','=', active_id), ('amount', '!=', 0.0), ('unit_amount', '&gt;', 0)]
+        </field>
+    </record>
+
+    <record id="view_account_analytic_line_tree_inherit_contribution" model="ir.ui.view">
+        <field name="name">account.analytic.line.tree.inherit.contribution</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_line_tree"/>
+        <field name="arch" type="xml">
+            <field name="product_id" position="after">
+                <field name="product_type_id" optional="hide"/>
+                <field name="order_type" optional="hide"/>
+                <field name="categ_id" optional="hide"/>
+                <field name="margin" optional="show" class="invisible"/>
+            </field>
+            <xpath expr="//field[@name='account_id']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

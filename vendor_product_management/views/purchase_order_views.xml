@@ -1,0 +1,17 @@
+<odoo>
+    <data>
+        <record id="purchase_order_form_inherit_custom" model="ir.ui.view">
+            <field name="name">purchase.order.form.inherit.custom</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase_stock.purchase_order_view_form_inherit"/>
+            <field name="arch" type="xml">
+                <!-- Targeting the button with the action `action_product_forecast_report` -->
+                <xpath expr="//field[@name='order_line']/tree//field[@name='product_qty']" position="after">
+                    <!-- Add your new field here -->
+                    <field name="vendor_stock_control" column_invisible="1"/>
+                    <field name="vendor_stock_level" optional="show" string="L" widget="integer" invisible="not vendor_stock_control"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

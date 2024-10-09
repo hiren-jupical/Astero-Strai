@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_saleorder_document_inherit_sale_stock_inherit" inherit_id="sale_stock.report_saleorder_document_inherit_sale_stock">
+            <xpath expr="//strong[text()='Incoterm:']" position="replace">
+                <strong>Delivery Method:</strong>
+            </xpath>
+        </template>
+
+        <!-- TODO : it is not necessary because it's never called.  -->
+        <!-- <template id="account_report_invoice_document_inherit" inherit_id="account.report_invoice_document">
+            <xpath expr="//div[@name='incoterm_id']//strong[text()='Incoterm:']" position="replace">
+                <strong>Delivery Method:</strong>
+            </xpath>
+        </template> -->
+
+        <template id="inherit_report_saleorder_document" inherit_id="sale.report_saleorder_document">
+            <xpath expr="//t[@t-set='information_block']" position="replace">
+                <t t-set="information_block">
+                    <strong t-if="doc.partner_shipping_id == doc.partner_invoice_id">Invoicing and Shipping Address:</strong>
+                    <strong t-if="doc.partner_shipping_id != doc.partner_invoice_id">Invoicing Address:</strong>
+                    <div t-field="doc.partner_invoice_id"
+                         t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                </t>
+            </xpath>
+            <xpath expr="//t[@t-set='information_block']" position="after">
+                <t t-set="information_block_extended">
+                    <t t-if="doc.partner_shipping_id != doc.partner_invoice_id">
+                        <strong>Shipping Address:</strong>
+                        <div t-field="doc.partner_shipping_id"
+                             t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                    </t>
+                </t>
+            </xpath>
+            <xpath expr="//p[@t-if='doc.partner_id.vat']" position="replace"/>
+            <xpath expr="//th[@name='th_description']" position="after">
+                <th name="th_position">
+                    <span>Position</span>
+                </th>
+            </xpath>
+            <xpath expr="//td[@name='td_name']" position="after">
+                <td name="td_position">
+                    <span t-if="line.position" t-field="line.position"/>
+                </td>
+            </xpath>
+        </template>
+
+        <!--replace incoterm name instead of code-->
+        <template id="inherit_report_saleorder_document_sale_stock" inherit_id="sale_stock.report_saleorder_document_inherit_sale_stock">
+            <xpath expr="//p[@t-field='doc.incoterm.code']" position="replace">
+                <p t-field="doc.incoterm.name"/>
+            </xpath>
+        </template>
+    </data>
+</odoo>

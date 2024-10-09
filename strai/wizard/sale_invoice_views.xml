@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="sale_advance_payment_inv_timesheet_view_form" model="ir.ui.view">
+            <field name="name">sale_partial_invoicing.sale.advance.payment.inv.view.form</field>
+            <field name="model">sale.advance.payment.inv</field>
+            <field name="inherit_id" ref="sale.view_sale_advance_payment_inv"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='advance_payment_method']" position="after">
+                <!-- Hidden field computed based on ordered vs delivered quantity match -->
+                    <field name="qty_match" invisible="1"/>
+                </xpath>
+                <!-- Replaced original button with identical twins, one with added confirmation step if delivered quantities is different from ordered -->
+                <xpath expr="//button[@id='create_invoice_open']" position="replace">
+                    <button name="create_invoices" id="create_invoice_open" string="Create and View Invoice" type="object" context="{'open_invoices': True}" class="btn-primary" invisible="not qty_match and advance_payment_method == 'delivered'"/>
+                    <button name="create_invoices" id="create_invoice_open" string="Create and View Invoice" type="object" context="{'open_invoices': True}" class="btn-primary" invisible="qty_match or advance_payment_method in ['percentage', 'fixed']" confirm="There are undelivered products. Proceed anyway?"/>
+                </xpath>
+                <xpath expr="//button[@id='create_invoice_open']" position="after">
+                    <button name="create_invoices" id="create_invoice" string="Create Invoice" type="object" invisible="not qty_match and advance_payment_method == 'delivered'"/>
+                    <button name="create_invoices" id="create_invoice" string="Create Invoice" type="object" invisible="qty_match or advance_payment_method in ['percentage', 'fixed']" confirm="There are undelivered products. Proceed anyway?"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

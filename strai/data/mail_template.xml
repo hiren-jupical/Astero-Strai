@@ -1,0 +1,108 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data>
+        <record id="strai.factory_po_email_template" model="mail.template">
+            <field name="name">FABRIKK - Innkjøpsordre (NY)</field>
+            <field name="model_id" ref="purchase.model_purchase_order"/>
+            <field name="subject">Bestilling - {{ object.partner_id.name }} - {{ object.external_sales_order_no }}/{{ object.name }}/{{ object.user_id.initials }}</field>
+            <field name="email_from">{{ object.is_countertop_order == True and 'ordre@strai.no' or 'innkjop@strai.no' }}</field>
+            <field name="email_to"/>
+            <field name="partner_to">{{ object.partner_id.id }}</field>
+            <field name="auto_delete" eval="True"/>
+            <field name="use_default_to" eval="True"/>
+            <field name="lang">{{ object.partner_id.lang }}</field>
+            <!--PDF-->
+            <field name="report_template_ids" eval="[(4, ref('purchase.action_report_purchase_order'))]"/>
+            <!-- <field name="report_name">Innkjøpsordre {{ (object.name or '').replace('/','_') }} ({{ (object.company_id.display_name or '')}})</field> -->
+            <!--Message-->
+            <field name="body_html" type="html">
+                <div>
+                    <p t-out="object.partner_id.name or ''">Supplier</p>
+                    <p>
+                        Se vedlagte innkjøpsordre med ønsket leveringsdato <strong t-out="object.date_planned" t-options="{'widget': 'date'}"/>.<br/>
+                        Vennligst merk ordrebekreftelse og forsendelse med
+                        <strong>
+                            <span t-out="object.external_sales_order_no"/>/
+                            <span t-out="object.name"/>/
+                            <span t-out="object.user_id.initials"/>
+                        </strong>
+                    </p>
+                    <br/>
+                    Avtale:
+                    <t t-if="object.order_type">
+                        <strong>
+                            <span t-esc="dict(object.fields_get(allfields=['order_type'])['order_type']['selection'])[object.order_type]"/>
+                            <t t-if="object.price_campaign_id"> - <span t-out="object.price_campaign_id.name"/></t>
+                        </strong>
+                    </t><br/>
+                    <br/>
+                    <strong>Leveringsadresse:</strong><br/>
+                    <t t-if="object.dest_address_id">
+                        <div t-field="object.dest_address_id" t-options="{'widget': 'contact', 'fields': ['address', 'name'], 'no_marker': True}"/>
+                    </t>
+                    <t t-else="">
+                        <span t-field="object.picking_type_id.warehouse_id.partner_id.name"/>
+                        <div t-field="object.picking_type_id.warehouse_id.partner_id" t-options="{'widget': 'contact', 'fields': ['address'], 'no_marker': True}"/>
+                    </t>
+                    <br/>
+                    <br/>
+                    Med vennlig hilsen,
+                    <strong t-if="user.signature"><t t-out="user.signature or ''">Brukersignatur</t></strong>
+                    <strong t-else="">Innkjøpsavdelingen</strong>
+                </div>
+            </field>
+        </record>
+
+        <record id="strai.store_po_email_template" model="mail.template">
+            <field name="name">BUTIKK - Innkjøpsordre (NY)</field>
+            <field name="model_id" ref="purchase.model_purchase_order"/>
+            <field name="subject">Bestilling - {{ object.partner_id.name }} - {{ object.name }}/{{ object.winner_reference }}/{{ object.product_type_id.name }}/{{ object.order_type }}/{{ object.user_id.initials }}</field>
+<!--            <field name="email_from">{{ (object.user_id.email_formatted or user.email_formatted) }}</field>-->
+            <field name="email_to"/>
+            <field name="partner_to">{{ object.partner_id.id }}</field>
+            <field name="auto_delete" eval="True"/>
+            <field name="use_default_to" eval="True"/>
+            <field name="lang">{{ object.partner_id.lang }}</field>
+            <!--PDF-->
+            <field name="report_template_ids" eval="[(4, ref('purchase.action_report_purchase_order'))]"/>
+            <!-- <field name="report_name">Innkjøpsordre {{ (object.name or '').replace('/','_') }} ({{ (object.company_id.display_name or '')}})</field> -->
+            <!--Message-->
+            <field name="body_html" type="html">
+                <div>
+                    <p t-out="object.partner_id.name or ''">Supplier</p>
+                    <p>
+                        Se vedlagte innkjøpsordre med ønsket leveringsdato <strong t-out="object.date_planned" t-options="{'widget': 'date'}"/>.<br/>
+                        Vennligst merk ordrebekreftelse og forsendelse med
+                        <strong>
+                            <span t-out="object.external_sales_order_no"/>/
+                            <span t-out="object.name"/>/
+                            <span t-out="object.user_id.initials"/>
+                        </strong>
+                    </p>
+                    <br/>
+                    Avtale:
+                    <t t-if="object.order_type">
+                        <strong>
+                            <span t-esc="dict(object.fields_get(allfields=['order_type'])['order_type']['selection'])[object.order_type]"/>
+                            <t t-if="object.price_campaign_id"> - <span t-out="object.price_campaign_id.name"/></t>
+                        </strong>
+                    </t><br/>
+                    <br/>
+                    <strong>Leveringsadresse:</strong><br/>
+                    <t t-if="object.dest_address_id">
+                        <div t-field="object.dest_address_id" t-options="{'widget': 'contact', 'fields': ['address', 'name'], 'no_marker': True}"/>
+                    </t>
+                    <t t-else="">
+                        <span t-field="object.picking_type_id.warehouse_id.partner_id.name"/>
+                        <div t-field="object.picking_type_id.warehouse_id.partner_id" t-options="{'widget': 'contact', 'fields': ['address'], 'no_marker': True}"/>
+                    </t>
+                    <br/>
+                    <br/>
+                    Med vennlig hilsen,
+                    <strong t-if="user.signature"><t t-out="user.signature or ''">Brukersignatur</t></strong>
+                    <strong t-else="">Innkjøpsavdelingen</strong>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

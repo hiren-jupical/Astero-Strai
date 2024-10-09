@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="email_compose_message_wizard_form" model="ir.ui.view">
+        <field name="model">mail.compose.message</field>
+        <field name="inherit_id" ref="mail.email_compose_message_wizard_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//span[@name='document_followers_text']" position="before">
+                <field
+                    name="notify_followers" invisible="composition_mode == 'mass_mail'"/>
+            </xpath>
+            <xpath expr="//span[@name='document_followers_text']" position="after">
+                <span
+                    name="no_followers_text"
+                    invisible="not notify_followers"
+                    style="color: red;"
+                > - Advarsel : Du vil nå sende en epost til alle følgerne av dokumentet, ikke bare de som står nedenfor</span>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

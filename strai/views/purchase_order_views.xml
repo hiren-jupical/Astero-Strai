@@ -1,0 +1,232 @@
+<odoo>
+    <data>
+        <record id="purchase_order_extended_info_form_view" model="ir.ui.view">
+            <field name="name">purchase.order.extended.info.form.view</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <!--Group 1 start-->
+                <xpath expr="//field[@name='partner_id']" position="replace">
+                    <field name="partner_id" options="{'no_create': True, 'no_create_edit':True}" widget="res_partner_many2one" context="{'res_partner_search_mode': 'supplier', 'show_vat': True}" placeholder="Name, TIN, Email, or Reference"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="partner_ref"/>
+                    <field name="requisition_id"/>
+                    <field name="is_production" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='currency_id']" position="after">
+                    <field name="winner_reference" string="Winner butikk" readonly="1"/>
+                    <field name="winner_reference_production" string="Winner fabrikk" readonly="1"/>
+                    <field name="external_sales_order_no" readonly="state in ['purchase', 'done']"/>
+                    <field name="warranty_selected" widget="Radio" invisible="not is_production"/>
+                    <field name="product_type_id" readonly="state not in ['draft', 'sent'] or not is_production"/>
+                    <field name="order_type" readonly="state not in ['draft', 'sent'] or not is_production"/>
+                    <!--Alternatives based on order_type START-->
+                    <field name="sales_project_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True}" required="not is_production and order_type == 'project'" invisible="order_type != 'project'" readonly="state not in ['draft', 'sent'] or not is_production"/>
+                    <field name="apartment_id" domain="[('sales_project_id', '=', sales_project_id)]" invisible="sales_project_id == False" readonly="state not in ['draft', 'sent'] or not is_production"/>
+                    <field name="warranty_identification" invisible="order_type != 'warranty' or not is_production" readonly="state not in ['draft', 'sent']"/>
+                    <field name="store_warranty_order" invisible="not store_warranty_order" readonly="1"/>
+                    <field name="builder_partner_id" invisible="order_type != 'builder'" required="order_type == 'builder'" readonly="state not in ['draft', 'sent'] or not is_production"/>
+                    <!--Alternatives based on order_type END-->
+                    <field name="price_campaign_id" invisible="order_type != 'campaign'" required="order_type == 'campaign'" readonly="state not in ['draft', 'sent'] or not is_production"/>
+                    <field name="eno" invisible="order_type != 'project'" readonly="state not in ['draft', 'sent']"/>
+                </xpath>
+                <!--Group 1 end-->
+                <!--Group 2 start-->
+                <xpath expr="//label[@for='date_approve']" position="before">
+                    <field name="po_sent" string="PO sendt"/>
+                    <field name="supplier_confirmed"/>
+                    <field name="order_ack_checked"/>
+                </xpath>
+                <xpath expr="//label[@for='date_planned']" position="replace">
+                    <label for="date_planned" string="Requested Delivery Date"/>
+                </xpath>
+                <xpath expr="//field[@name='date_planned']" position="after">
+                    <field name="production_date" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='picking_type_id']" position="before">
+                    <field name="productionline_date" readonly="1" string="Produksjonsdato"/>
+                    <field name="logistic_send_date" readonly="1" string="Transportdato"/>
+                </xpath>
+                <xpath expr="//field[@name='dest_address_id']" position="after">
+                    <field name="delivery_phone_one" readonly="state not in ['draft', 'sent']"/>
+                    <field name="delivery_phone_two" readonly="state not in ['draft', 'sent']"/>
+                    <field name="delivery_floor_id" readonly="state not in ['draft', 'sent']"/>
+                    <field name="info_transport" readonly="state not in ['draft', 'sent']"/>
+                    <field name="info_production" readonly="state not in ['draft', 'sent']"/>
+                    <field name="info_accounting" readonly="state not in ['draft', 'sent']"/>
+                    <field name="info_supplier" string="Leverandør kommentar" readonly="state not in ['draft', 'sent']"/>
+                    <label for="order_attachment_ids" colspan="2" groups="base.group_user"/>
+                    <field name="order_attachment_ids" nolabel="1" colspan="2" widget="many2many_binary" readonly="state not in ['draft', 'sent']" groups="base.group_user"/>
+                    <!--Hidden-->
+                    <field name="this_day" invisible="1"/>
+                </xpath>
+                <!--Group 2 end-->
+                <!--Other Information Start-->
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="info_transport" readonly="state not in ['draft', 'sent']"/>
+                    <field name="info_production" readonly="state not in ['draft', 'sent']"/>
+                    <field name="info_accounting" readonly="state not in ['draft', 'sent']"/>
+                    <field name="order_attachment_ids" widget="many2many_binary" readonly="state not in ['draft', 'sent']" groups="base.group_user"/>
+                    <field name="store_name" readonly="state not in ['draft', 'sent']"/>
+                    <field name="store_user_name" readonly="state not in ['draft', 'sent']"/>
+                    <field name="store_user_email" readonly="state not in ['draft', 'sent']"/>
+                </xpath>
+                <!--Other Information end-->
+                <xpath expr="//button[@name='button_confirm'][2]" position="replace">
+                    <button name="button_confirm" type="object"  class="btn-primary" invisible="state != 'draft'" string="Confirm Order" id="draft_confirm" data-hotkey="q"/>
+                </xpath>
+                <xpath expr="//button[@name='action_rfq_send'][1]" position="replace">
+                </xpath>
+                <xpath expr="//button[@name='print_quotation'][1]" position="replace">
+                </xpath>
+                <xpath expr="//button[@name='button_confirm'][2]" position="after">
+                    <button name="action_rfq_send" string="Send by Email" type="object" invisible="state != 'draft'" context="{'send_rfq':True}"/>
+                    <button name="print_quotation" string="Print RFQ" type="object" invisible="state != 'draft'" groups="base.group_user"/>
+                </xpath>
+                <!-- <xpath expr="//button[@name='button_unlock']" position="after">
+                    <button name="action_confirmation_ok" type="object" string="Confirmation OK" attrs="{'invisible':[('is_production', '!=', False)]}"/>
+                </xpath> -->
+                <xpath expr="//field[@name='order_line']/tree" position="attributes">
+                    <attribute name="limit">500</attribute>
+                </xpath>
+<!--                <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="attributes">-->
+<!--                    <attribute name="attrs">{'readonly': [('state', 'in', ['done', 'cancel'])]}</attribute>-->
+<!--                    <attribute name="attrs">{'readonly': False}</attribute>-->
+<!--                    <attribute name="options">{'no_quick_create':True,'no_create_edit':True,'no_open': False, 'no_create': True}</attribute>-->
+<!--                </xpath>-->
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="replace">
+                    <field name="product_id" readonly="0" options="{'no_quick_create':True,'no_create_edit':True,'no_open': False, 'no_create': True}"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="before">
+                    <field name="catalogue_price" readonly="1"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='taxes_id']" position="after">
+                    <field name="strai_discount" context="{'default_discount_changed': True}"/>
+                    <field name="price_before_discount" optional="hide" force_save="1"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="attributes">
+                    <attribute name="context">{'default_price_unit_changed': True}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="before">
+                    <field name="position" optional="hide"/>
+                </xpath>
+<!--                <xpath expr="//header/field[@name='state']" position="before">-->
+<!--                    <button name="action_supplier_confirmed" string="Supplier Confirmed" class="oe_highlight" type="object" attrs="{'invisible': ['|', ('state', '!=', 'purchase'), ('supplier_confirmed', '=', True)]}"/>-->
+<!--                </xpath>-->
+                <xpath expr="//button[@name='action_create_invoice']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//tree//field[@name='product_id']" position="attributes">
+                    <attribute name="context">{'from_purchase_order': True}</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="purchase_order_tree_view_inherit" model="ir.ui.view">
+            <field name="name">purchase.order.tree.view.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_view_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='activity_ids']" position="after">
+                    <field name="tag_ids" optional="show" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="store_responsible_id" string="Selger" optional="show"/>
+                    <field name="dest_address_id" string="Kunde" optional="show"/>
+                    <field name="purchase_order_name_store" optional="hide"/>
+                </xpath>
+                <xpath expr="//field[@name='date_planned']" position="attributes">
+                    <attribute name="widget">custom_datetime</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="purchase_order_kpi_tree_view_inherit" model="ir.ui.view">
+            <field name="name">purchase.order.kpi.tree.view.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='activity_ids']" position="after">
+                    <field name="tag_ids" optional="show" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="store_responsible_id" string="Selger" optional="show"/>
+                    <field name="dest_address_id" string="Kunde" optional="show"/>
+                    <field name="purchase_order_name_store" optional="hide"/>
+                </xpath>
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="external_sales_order_no" string="CW SO" optional="show"/>
+                    <field name="date_planned" optional="show" widget="custom_datetime"/>
+                    <field name="productionline_date" string="Produksjonsdato" optional="show"/>
+                    <field name="logistic_send_date" string="Transportdato" optional="show"/>
+                </xpath>
+                <xpath expr="//field[@name='state']" position="before">
+                    <field name="po_sent" string="PO sendt" optional="show"/>
+                    <field name="supplier_confirmed" string="Bekreftelse mottatt" optional="show"/>
+                    <field name="order_ack_checked" string="Bekreftelse sjekket" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="purchase_order_tree_inherit_state" model="ir.ui.view">
+            <field name="name">purchase.order.tree</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="replace">
+                    <field name="state" widget="badge" optional="show" decoration-success="state == 'purchase' or state == 'done'" decoration-warning="state == 'to approve'" decoration-info="state == 'draft' or state == 'sent'"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- custom filters-->
+        <record id="purchase_order_view_search_strai" model="ir.ui.view">
+            <field name="name">request.quotation.select.strai</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="replace">
+                    <field name="name" filter_domain="['|', '|', '|', '|', ('name', 'ilike', self), ('partner_ref', 'ilike', self), ('partner_id', 'child_of', self), ('external_sales_order_no', 'ilike', self), ('purchase_order_name_store', 'ilike', self)]"/>
+                </xpath>
+                <xpath expr="//filter[@name='late_rfqs']" position="after">
+                    <filter name="date_order_21" string="Leveres innen 21 dager" domain="['&amp;', ('date_order','&lt;=',(context_today()+datetime.timedelta(days=21)).strftime('%%Y-%%m-%%d')), ('state', 'in', ['draft', 'sent', 'to approve'])]"/>
+                    <filter name="date_order" string="Leveres innen 80 dager" domain="['&amp;', ('date_order','&lt;=',(context_today()+datetime.timedelta(days=80)).strftime('%%Y-%%m-%%d')), ('state', 'in', ['draft', 'sent', 'to approve'])]"/>
+                </xpath>
+                <xpath expr="//search" position="inside">
+                    <field name="dest_address_id" string="Kunde"/>
+                    <field name="purchase_order_name_store"/>
+                </xpath>
+
+                <xpath expr="//filter[@name='draft_rfqs']" position="attributes">
+                    <attribute name="domain">
+                        [('state', 'not in', ['purchase', 'done', 'cancel'])]
+                    </attribute>
+                    <attribute name="string">
+                        Til bestilling
+                    </attribute>
+                </xpath>
+                <xpath expr="//filter[@name='waiting_rfqs']" position="attributes">
+                    <attribute name="domain">
+                        [('state', 'in', ['purchase', 'done']),
+                        ('supplier_confirmed', '=', False),
+                        ('order_ack_checked', '=', False)]
+                    </attribute>
+                    <attribute name="string">
+                        Venter
+                    </attribute>
+                </xpath>
+                <xpath expr="//filter[@name='late_rfqs']" position="attributes">
+                    <attribute name="domain">
+                        [('state', 'in', ['purchase', 'done']), 
+                        ('supplier_confirmed', '=', True),
+                        ('order_ack_checked', '=', False)]
+                    </attribute>
+                    <attribute name="string">
+                        Sjekk bekreftelser
+                    </attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

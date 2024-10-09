@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_product_type_tree" model="ir.ui.view">
+        <field name="name">product.type.tree</field>
+        <field name="model">product.type</field>
+        <field name="arch" type="xml">
+            <tree string="Product Type">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="product_type"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_product_type_form" model="ir.actions.act_window">
+        <field name="name">Product Types</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem action="action_product_type_form" id="sale_menu_action_product_type_form" parent="sale.menu_sales_config" sequence="5"/>
+
+</odoo>

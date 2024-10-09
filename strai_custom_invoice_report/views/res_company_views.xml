@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_company_form_inherit_stria_invoice_report" model="ir.ui.view">
+        <field name="name">res.company.form.inherit.stria.invoice.report</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook//page[@name='other']//group//group//field[@name='product_route_ids']" position="after">
+                <field name="flyt_inv_pdf_sections"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+

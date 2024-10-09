@@ -1,0 +1,11 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* sale
+
+#. module: strai_down_payment_section
+#. odoo-python
+#: code:strai_down_payment_section/wizard/sale_make_invoice_advance.py:0
+#, python-format
+msgid "Down Payments"
+msgstr "Forskuddsbetaling"
+

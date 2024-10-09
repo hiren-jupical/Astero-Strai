@@ -1,0 +1,19 @@
+<odoo>
+    <record id="sale_order_form_inherit_custom_vendor" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.custom.vendor</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='client_order_ref']" position="after">
+                <field name="activate_vendor_pr_line" invisible='1'/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='name']" position="before">
+                <field name="change_vendor_possible" column_invisible='1'/>
+                <button name="action_change_vendor" title="Vendors" icon="fa-truck" type="object" class="oe_highlight" invisible="not change_vendor_possible or state in ['sale', 'done', 'cancel']" column_invisible="not parent.activate_vendor_pr_line"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='name']" position="after">
+                <field name="current_vendor" string="Vendor" column_invisible="not parent.activate_vendor_pr_line" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

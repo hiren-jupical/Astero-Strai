@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Attachment -->
+    <record id="view_attachment_form_inherit" model="ir.ui.view">
+        <field name="model">ir.attachment</field>
+        <field name="name">view.attachment.form.inherit</field>
+        <field name="inherit_id" ref="base.view_attachment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/group/group[2]" position="inside">
+                <field name="allow_multicompany"/>
+                <field name="is_drag_attachment" invisible="1"/>
+                <field name="is_sale_attachment" invisible="1"/>
+                <field name="integration_system"/>
+                <field name="integration_status"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

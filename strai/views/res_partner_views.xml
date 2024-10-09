@@ -1,0 +1,104 @@
+<odoo>
+    <data>
+        <record id="partner_form_inherit" model="ir.ui.view">
+            <field name="name">partner.address.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='child_ids']/form/sheet/group/group/field[@name='name']" position="before">
+                    <field name="priority" invisible="type not in ['delivery', 'invoice']"/>
+                </xpath>
+                <xpath expr="//field[@name='property_supplier_payment_term_id']" position="after">
+                    <field name="default_leadtime" string="Ledetid"/>
+                </xpath>
+                <xpath expr="//group[@name='purchase']" position="inside">
+                    <field name="is_mto"/>
+                </xpath>
+                <xpath expr="//group/field[@name='property_product_pricelist']" position="replace">
+                    <field name="property_product_pricelist" options="{'no_create': True, 'no_create_edit':True}" groups="product.group_product_pricelist" invisible="is_company == False and parent_id != False"/>
+                </xpath>
+                <xpath expr="//group/field[@name='property_product_pricelist']" position="after">
+                    <field name="is_production" invisible="1"/>
+                    <field name="is_builder" readonly="not is_production"/>
+                    <field name="internal_pricelist_id" options="{'no_create': True, 'no_create_edit':True}" invisible="not is_builder or not is_production" required="is_builder and is_production"/>
+                    <field name="independent_shop" readonly="not is_production"/>
+                    <field name="external_customer_identifier" readonly="not is_production"/>
+                    <field name="no_price_compare_cw" groups="base.group_no_one" invisible="company_type != 'company'"/>
+                </xpath>
+                <xpath expr="//group[@name='purchase']" position="inside">
+                    <field name="picking_type_id" domain="[('code', '=', 'incoming')]"/>
+                </xpath>
+                <xpath expr="//field[@name='ref']" position="after">
+                    <field name="winnerref" invisible="type not in ['invoice', 'delivery']" readonly="1"/>
+                </xpath>
+                <xpath expr="//group[@name='misc']" position="after">
+                    <group name="winner_customer" priority="7" string="Winner kundenr">
+                        <field name="winner_customers" nolabel="1" colspan="2">
+                            <tree string="Winner kundenr">
+                                <field name="partner_id"/>
+                                <field name="customer_number"/>
+                                <field name="pricelist_id"/>
+                            </tree>
+                        </field>
+                    </group>
+                </xpath>
+                <xpath expr="//field[@name='property_account_position_id']" position="after">
+                    <field name="residual_product"/>
+                    <field name="standard_account" string="Standard konto"/>
+                    <field name="standard_product" string="Standard produkt"/>
+                </xpath>
+                <xpath expr="//page[@name='sales_purchases']" position="after">
+                    <page name="proff" string="Proff" invisible="not is_builder">
+                        <group name="proff_container_row">
+                            <group name="info" string="Info">
+                                <field name="industry"/>
+                                <field name="agreement_start_date"/>
+                                <field name="main_builder" readonly="not is_production" options="{'no_quick_create':True,'no_create_edit':True}"/>
+                                <field name="builder_agreement_filename" invisible="1"/>
+                                <field name="builder_agreement_file" filename="builder_agreement_filename" widget="binary" readonly="not is_production"/>
+                                <field name="agreement_info" readonly="not is_production"/>
+                            </group>
+                            <group name="invoice_options" string="Faktura">
+                                <field name="agreement_type" invisible="is_production"/>
+                                <field name="property_product_pricelist" invisible="not is_production" string="Avtaletype" domain="[('available_for', '=', 'proff')]" options="{'no_quick_create':True,'no_create_edit':True}"/>
+                                <field name="invoice_option" readonly="not is_production"/>
+                                <field name="invoice_referral" readonly="not is_production"/>
+                            </group>
+                        </group>
+                        <group name="proff_discount_matrix" string="Rabattmatrise">
+                            <field name="builder_discount_matrix" nolabel="1" colspan="2" readonly="not is_production">
+                                <tree string="Rabattmatrise">
+                                    <field name="product_category_name"/>
+                                    <field name="product_brand_id"/>
+                                    <field name="product_series_id"/>
+                                    <field name="agreement_discount" widget="percentage"/>
+                                    <field name="customer_discount_option" widget="percentage"/>
+                                    <field name="customer_discount_referral" widget="percentage"/>
+                                    <field name="commission_option" widget="percentage"/>
+                                    <field name="commission_referral" widget="percentage"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_res_partner_filter_strai_inherit" model="ir.ui.view">
+            <field name="name">view_res_partner_filter_strai_inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='user_id']" positon="after">
+                    <filter string="Mine proffkunder" name="my_builder_partners" domain="[('user_id', '=', uid),('is_builder', '=', True)]"/>
+                    <separator/>
+                </xpath>
+                <xpath expr="//filter[@name='type_company']" positon="after">
+                    <separator/>
+                    <filter string="Proffkunder" name="builder_partners" domain="[('is_builder', '=', True)]"/>
+                    <separator/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

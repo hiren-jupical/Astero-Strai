@@ -1,0 +1,157 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* strai_exhibition_analytics
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-06-09 12:11+0000\n"
+"PO-Revision-Date: 2021-06-09 14:21+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: no\n"
+"X-Generator: Poedit 2.4.1\n"
+
+#. module: strai_exhibition_analytics
+#: model_terms:ir.ui.view,arch_db:strai_exhibition_analytics.analytic_exhibition_lines
+msgid "Add"
+msgstr "Legg til"
+
+#. module: strai_exhibition_analytics
+#: model_terms:ir.ui.view,arch_db:strai_exhibition_analytics.analytic_exhibition_lines
+msgid "Cancel"
+msgstr "Kanseller"
+
+#. module: strai_exhibition_analytics
+#: model_terms:ir.ui.view,arch_db:strai_exhibition_analytics.strai_exhibiton_analytics_order_form_inherit
+msgid "Choose Products"
+msgstr ""
+
+#. module: strai_exhibition_analytics
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_analytic_exhibition_line_missing__chosen_amount
+msgid "Chosen Amount"
+msgstr "valgt antall"
+
+#. module: strai_exhibition_analytics
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_analytic_exhibition_line_missing__create_uid
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_analytic_exhibition_lines__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: strai_exhibition_analytics
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_analytic_exhibition_line_missing__create_date
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_analytic_exhibition_lines__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: strai_exhibition_analytics
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_analytic_exhibition_line_missing__display_name
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_analytic_exhibition_lines__display_name
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_sale_order__display_name
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_sale_order_line__display_name
+msgid "Display Name"
+msgstr "Visningsnavn"
+
+#. module: strai_exhibition_analytics
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_sale_order__exhibit_analytic_account
+msgid "Exhibit Analytic Account"
+msgstr "Utstillings analytisk konto"
+
+#. module: strai_exhibition_analytics
+#: code:addons/strai_exhibition_analytics/models/sale_order.py:0
+#, python-format
+msgid "Exhibition Products"
+msgstr "Utstillingsprodukter"
+
+#. module: strai_exhibition_analytics
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_sale_order_line__from_analytic_account
+msgid "From Analytic Account"
+msgstr ""
+
+#. module: strai_exhibition_analytics
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_analytic_exhibition_line_missing__id
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_analytic_exhibition_lines__id
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_sale_order__id
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_sale_order_line__id
+msgid "ID"
+msgstr ""
+
+#. module: strai_exhibition_analytics
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_analytic_exhibition_line_missing____last_update
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_analytic_exhibition_lines____last_update
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_sale_order____last_update
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_sale_order_line____last_update
+msgid "Last Modified on"
+msgstr "Sist endret"
+
+#. module: strai_exhibition_analytics
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_analytic_exhibition_line_missing__write_uid
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_analytic_exhibition_lines__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: strai_exhibition_analytics
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_analytic_exhibition_line_missing__write_date
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_analytic_exhibition_lines__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: strai_exhibition_analytics
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_analytic_exhibition_lines__order_id
+msgid "Order"
+msgstr ""
+
+#. module: strai_exhibition_analytics
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_analytic_exhibition_line_missing__product_id
+msgid "Product"
+msgstr ""
+
+#. module: strai_exhibition_analytics
+#: model:ir.model,name:strai_exhibition_analytics.model_sale_order
+msgid "Sales Order"
+msgstr "Salgsordre"
+
+#. module: strai_exhibition_analytics
+#: model:ir.model,name:strai_exhibition_analytics.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Salgsordrelinje"
+
+#. module: strai_exhibition_analytics
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_analytic_exhibition_line_missing__unit_amount
+msgid "Unit Amount"
+msgstr "Tilgjengelig Mengde"
+
+#. module: strai_exhibition_analytics
+#: model:ir.model.fields,field_description:strai_exhibition_analytics.field_analytic_exhibition_line_missing__wizard_id
+msgid "Wizard"
+msgstr ""
+
+#. module: strai_exhibition_analytics
+#: code:addons/strai_exhibition_analytics/wizard/analytics_account_lines.py:0
+#, python-format
+msgid ""
+"You didn't chose an amount or the amount you choose were bigger than the "
+"available amount"
+msgstr ""
+"Du valgte ikke en mengde eller mengden du valgte var større enn den "
+"tilgjengelige mengde"
+
+#. module: strai_exhibition_analytics
+#: model:ir.actions.act_window,name:strai_exhibition_analytics.action_open_exhibiton_lines_wizard
+msgid "action_open_exhibiton_lines_wizard"
+msgstr ""
+
+#. module: strai_exhibition_analytics
+#: model:ir.model,name:strai_exhibition_analytics.model_analytic_exhibition_line_missing
+msgid "analytic.exhibition.line.missing"
+msgstr ""
+
+#. module: strai_exhibition_analytics
+#: model:ir.model,name:strai_exhibition_analytics.model_analytic_exhibition_lines
+msgid "analytic.exhibition.lines"
+msgstr ""

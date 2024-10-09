@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="inherit_purchaseorder_report_document_flyt" inherit_id="purchase.report_purchaseorder_document">
+
+            <xpath expr="//th[@name='th_taxes']" position="replace">
+            </xpath>
+
+            <xpath expr="//td[@name='td_taxes']" position="replace">
+            </xpath>
+
+            <xpath expr="//th[@name='th_date_req']" position="replace">
+            </xpath>
+
+            <xpath expr="//span[@t-field='line.date_planned']/.." position="attributes">
+                <attribute name="t-if">False</attribute>
+            </xpath>
+
+            <xpath expr="//th[@name='th_description']" position="attributes">
+                <attribute name="style">text-align:left;</attribute>
+            </xpath>
+
+            <xpath expr="//th[@name='th_quantity']" position="attributes">
+                <attribute name="style">text-align:left;</attribute>
+            </xpath>
+
+            <!--            <xpath expr="//th[@name='th_description']" position="after">-->
+            <!--                <th name="th_vendor_prod_code" style="text-align:left;">-->
+            <!--                    <strong>Ekstern produktkode</strong>-->
+            <!--                </th>-->
+            <!--            </xpath>-->
+
+            <xpath expr="//t[@t-foreach='o.order_line']" position="attributes">
+                <attribute name="t-foreach">o.order_line.filtered(lambda l: (l.product_qty != 0 and l.display_type not in ['line_note', 'line_section']) or l.display_type in ['line_note', 'line_section'] )</attribute>
+            </xpath>
+
+            <xpath expr="//td[@id='product']" position="replace">
+                <td id="product">
+                    <span t-field="line.product_id.display_name"/>
+                    <br/>
+<!--                    <span class="text-secondary mx-3" t-esc="request.env['product.supplierinfo'].search([('product_tmpl_id', '=', line.product_id.product_tmpl_id.id),('partner_id','=', o.partner_id.id)], limit=1).product_name or ''"/>-->
+                    <span t-field="line.name" class="text-secondary mx-3"/>
+                </td>
+            </xpath>
+
+            <!--            <xpath expr="//td[@id='product']" position="after">-->
+            <!--                <td class="text-left">-->
+            <!--                    <div t-esc="request.env['product.supplierinfo'].search([('product_tmpl_id', '=', line.product_id.product_tmpl_id.id),('partner_id','=', o.partner_id.id)], limit=1).product_code or ''"/>-->
+            <!--                </td>-->
+            <!--            </xpath>-->
+
+            <xpath expr="//p[@t-field='o.date_order']" position="attributes">
+                <attribute name="t-options">{"widget": "date"}</attribute>
+            </xpath>
+
+            <xpath expr="//div[@t-elif='o.date_order']" position="after">
+                <div t-if="o.date_planned" class="col-3 bm-2">
+                    <strong>Leveringsdato:</strong>
+                    <p t-field="o.date_planned" class="m-0" t-options="{&quot;widget&quot;: &quot;date&quot;}"/>
+                </div>
+            </xpath>
+
+            <xpath expr="//div[hasclass('page')]/div[hasclass('oe_structure')]" position="after">
+                <br/>
+            </xpath>
+
+            <xpath expr="//div[@t-field='o.partner_id']" position="before">
+                <br/>
+                <strong>Leverandør:</strong>
+            </xpath>
+
+            <xpath expr="//t[@t-if='o.dest_address_id']/t[1]/strong" position="before">
+                <br/>
+            </xpath>
+
+            <xpath expr="//h2[contains(@t-if, 'purchase')]" position="replace">
+                <h2 t-if="o.state in ['purchase', 'done']">Purchase Order
+                    <span t-field="o.name"/>
+                </h2>
+            </xpath>
+
+            <xpath expr="//h2[3]" position="after">
+                <div>
+                    <br/>
+                </div>
+                <strong>Vennligst merk ordrebekreftelse og forsendelse:</strong>
+                <span t-field="o.external_sales_order_no"/>/
+                <span t-field="o.name"/>
+                <div t-if="o.store_name">
+                    <strong>Butikk:</strong>
+                    <span t-field="o.store_name"/>
+                </div>
+                <div>
+                    <strong t-if="o.order_type">Avtale:</strong>
+                    <span t-if="o.order_type" style="text-transform: uppercase;" t-esc="dict(o.fields_get(allfields=['order_type'])['order_type']['selection'])[o.order_type]"/>
+                    <span t-if="o.sales_project_id" t-esc="o.sales_project_id.name"/>
+                    <span t-if="o.price_campaign_id" t-esc="o.price_campaign_id.name"/>
+                </div>
+                <div t-if="o.info_supplier">
+                    <br/>
+                    <strong>Kommentar:</strong>
+                    <span t-field="o.info_supplier"/>
+                </div>
+                <div>
+                    <br/>
+                </div>
+            </xpath>
+
+            <xpath expr="//th[@name='th_description']" position="before">
+                <th name="th_internal_productcode" style="text-align:left;">
+                    <strong>Vår kode</strong>
+                    <br/>
+                    <strong class="text-secondary mx-3">Deres kode</strong>
+                </th>
+            </xpath>
+
+            <xpath expr="//td[@id='product']" position="before">
+                <td class="text-left">
+                    <span t-field="line.product_id.product_tmpl_id.default_code"/>
+                    <br/>
+                    <span class="text-secondary mx-3" t-esc="request.env['product.supplierinfo'].search([('product_tmpl_id', '=', line.product_id.product_tmpl_id.id),('partner_id','=', o.partner_id.id)], limit=1).product_code or ''"/>
+                </td>
+            </xpath>
+
+            <xpath expr="//th[@name='th_description']" position="replace">
+                <th name="th_description" style="text-align:left;">
+                    <strong>Vår beskrivelse</strong>
+                    <br/>
+                    <strong class="text-secondary mx-3">Deres beskrivelse</strong>
+                </th>
+            </xpath>
+
+            <!--            <xpath expr="//td[@id='product']" position="replace">-->
+            <!--              <td id="product" class="text-left">-->
+            <!--                <span t-field="line.product_id.product_tmpl_id.name"/>-->
+            <!--              </td>-->
+            <!--            </xpath>-->
+
+            <xpath expr="//th[@name='th_price_unit']" position="replace">
+            </xpath>
+
+            <xpath expr="//span[@t-field='line.price_unit']" position="replace">
+            </xpath>
+
+            <xpath expr="//span[@t-field='line.price_subtotal']" position="replace">
+            </xpath>
+
+            <xpath expr="//t[contains(@t-if, 'current_section and')]" position="replace">
+            </xpath>
+
+            <xpath expr="//div[@id='total']" position="replace">
+            </xpath>
+
+            <xpath expr="//span[@t-field='line.product_qty']" position="replace">
+                <span t-if="not o.is_countertop_order" t-esc="('%.4f' % line.product_qty).rstrip('0').rstrip('.')"/>
+                <span t-if="o.is_countertop_order" t-field="line.product_qty"/>
+            </xpath>
+
+            <xpath expr="//t[@t-if='o.dest_address_id']" position="before">
+                <div t-if="o.delivery_phone_one">
+                  <span>Tlf 1:</span>
+                  <span t-field="o.delivery_phone_one"/>
+                </div>
+                <div t-if="o.delivery_phone_two">
+                  <span>Tlf 2:</span>
+                  <span t-field="o.delivery_phone_two"/>
+                </div>
+            </xpath>
+        </template>
+
+        <template id="inherit_purchaseorder_po_stock_report_document_flyt"
+                  inherit_id="purchase_stock.report_purchaseorder_document">
+            <xpath expr="//t[@t-else='']/t[1]/strong" position="before">
+                <br/>
+            </xpath>
+            <xpath expr="//div[@t-if='o.picking_type_id and o.picking_type_id.warehouse_id']" position="replace">
+                <div t-if="o.picking_type_id and o.picking_type_id.warehouse_id">
+                    <span t-field="o.picking_type_id.warehouse_id.partner_id.name"/>
+                    <div t-field="o.picking_type_id.warehouse_id.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;phone&quot;], &quot;no_marker&quot;: True, &quot;phone_icons&quot;: True}"/>
+                </div>
+            </xpath>
+        </template>
+    </data>
+</odoo>

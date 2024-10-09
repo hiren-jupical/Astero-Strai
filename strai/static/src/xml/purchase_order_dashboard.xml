@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template_ext" xml:space="preserve">
+    <t t-name="PurchaseDashboardExt" t-inherit="purchase.PurchaseDashboard" t-inherit-mode="extension" owl="1">
+    	<xpath expr="//div[hasclass('gap-4')][1]" position="replace">
+    		<div class="grid gap-4">
+                <div class="g-col-3 g-col-sm-2 d-flex align-items-center py-2 justify-content-end text-end justify-content-lg-start text-lg-start">
+                    All purchases
+                </div>
+                <div class="g-col-9 g-col-sm-10 grid gap-1">
+                    <div class="g-col-4 p-0" t-on-click="setSearchContext" title="Til bestilling" filter_name="draft_rfqs">
+                        <a href="#" class="btn btn-primary w-100 h-100 border-0 rounded-0 text-capitalize fw-normal">
+                            <div class="fs-2" t-out="purchaseData['all_to_send']"/>Til bestilling
+                        </a>
+                    </div>
+                    <div class="g-col-4 p-0" t-on-click="setSearchContext" title="Venter" filter_name="waiting_rfqs">
+                        <a href="#" class="btn btn-primary w-100 h-100 border-0 rounded-0 text-capitalize fw-normal">
+                            <div class="fs-2" t-out="purchaseData['all_waiting']"/>Venter
+                        </a>
+                    </div>
+                    <div class="g-col-4 p-0" t-on-click="setSearchContext" title="Sjekk bekreftelser" filter_name="late_rfqs">
+                        <a href="#" class="btn btn-primary w-100 h-100 border-0 rounded-0 text-capitalize fw-normal">
+                            <div class="fs-2" t-out="purchaseData['all_late']"/>Sjekk bekreftelser
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+    	</xpath>
+    	<xpath expr="//div[hasclass('gap-4')][2]/div[1]" position="replace">
+    		<div class="g-col-3 g-col-sm-2 d-flex align-items-center py-2 justify-content-end text-end justify-content-lg-start text-lg-start">
+            	My Purchase
+            </div>
+    	</xpath>
+    </t>
+</templates>

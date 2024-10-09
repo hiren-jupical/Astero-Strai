@@ -1,0 +1,38 @@
+<odoo>
+    <data>
+        <record id="product_supplierinfo_search_view_extended" model="ir.ui.view">
+            <field name="name">product.supplierinfo.search.view.inherit</field>
+            <field name="model">product.supplierinfo</field>
+            <field name="inherit_id" ref="product.product_supplierinfo_search_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search" position="inside">
+                    <field name="product_code"/>
+                    <field name="winner_product_code"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="product_supplierinfo_form_extended" model="ir.ui.view">
+            <field name="name">product.supplierinfo.form.extended</field>
+            <field name="model">product.supplierinfo</field>
+            <field name="inherit_id" ref="product.product_supplierinfo_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_code']" position="after">
+                    <field name="winner_product_code" string="Winner produktkode"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- extended info in the product => purchase => supplier/product code list -->
+        <record id="product_supplier_supplierinfo_tree_view2_extended" model="ir.ui.view">
+            <field name="name">product.supplier.supplierinfo.tree.view2.extended</field>
+            <field name="model">product.supplierinfo</field>
+            <field name="inherit_id" ref="purchase.product_supplierinfo_tree_view2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_code']" position="after">
+                    <field name="winner_product_code" string="Winner produktkode" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

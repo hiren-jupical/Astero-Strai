@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_trunk_endpoint_sale_manager,trunk.operations,trunk.model_trunk_endpoint,sales_team.group_sale_manager,1,1,1,1
+access_trunk_endpoint_sale_salesman,trunk.operations,trunk.model_trunk_endpoint,sales_team.group_sale_salesman,1,1,1,1
+access_trunk_endpoint_salesman,trunk.operations,trunk.model_trunk_endpoint,sales_team.group_sale_salesman,1,1,1,1
+trunk.access_strai_trunk,access_strai_trunk,trunk.model_strai_trunk,base.group_user,1,1,1,1

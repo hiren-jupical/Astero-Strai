@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <record id="res_partner_supplier_external_attachment_form_view" model="ir.ui.view">
+            <field name="name">res.partner.supplier.external.attachment.form.view</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='is_mto']" position="after">
+                    <field name="attach_e01_purchase"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_campaign_tree" model="ir.ui.view">
+            <field name="name">strai.campaign.tree</field>
+            <field name="model">strai.campaign</field>
+            <field name="arch" type="xml">
+                <tree string="Campaigns">
+                    <field name="name"/>
+                    <field name="campaign_pricelist_id"/>
+                    <field name="campaign_info"/>
+                    <field name="campaign_company_ids" widget="many2many_tags"/>
+                    <field name="from_date" widget="custom_datetime"/>
+                    <field name="to_date" widget="custom_datetime"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- <button class="oe_stat_button" name="sale_order_view" type="object" icon="fa-dollar">
+            <field string="Sale Orders" name="sale_count" widget="statinfo"/>
+        </button> -->
+
+        <record id="view_campaign_form" model="ir.ui.view">
+            <field name="name">strai.campaign.form</field>
+            <field name="model">strai.campaign</field>
+            <field name="arch" type="xml">
+                <form string="Campaigns">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box" groups="base.group_user">
+                            <button name="sale_order_view" type="object" class="oe_stat_button" icon="fa-dollar">
+                                <field string="Sale Orders" name="sale_count" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <group name="campaign">
+                            <group name="campaign_details" string="Campaign Details">
+                                <field name="name"/>
+                                <field name="campaign_company_ids" widget="many2many_tags"/>
+                                <field name="campaign_pricelist_id"/>
+                                <field name="campaign_info"/>
+                            </group>
+                            <group name="date_details" string="Period of Validity">
+                                <field name="from_date" widget="custom_datetime" required="1"/>
+                                <field name="to_date" widget="custom_datetime" required="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_campaign_form" model="ir.actions.act_window">
+            <field name="name">Campaigns</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">strai.campaign</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="action_campaign_form" id="sale_menu_action_campaign_form" parent="sale.menu_sales_config" sequence="6" groups='group_campaign_manager'/>
+    </data>
+</odoo>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="flyt_account_report_difference.AccountReportHeaderCustomizable"
+       t-inherit="account_reports.AccountReportHeaderCustomizable" t-inherit-mode="extension">
+        <xpath expr="//t[contains(@t-if, 'controller.hasGrowthComparisonColumn')]//t[contains(@t-if, 'columnHeader_first')]//th[hasclass('growth_comparison_header')]"
+               position="before">
+            <!--    Added Column for the difference   -->
+            <th class="growth_comparison_header">
+                <t t-out="currentRoundingUnitName(this.controller.options['rounding_unit'])"/>
+            </th>
+        </xpath>
+    </t>
+</templates>

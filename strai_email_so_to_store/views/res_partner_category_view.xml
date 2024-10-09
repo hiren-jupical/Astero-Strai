@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_partner_category_form_inherit_strai_email_so_to_store" model="ir.ui.view">
+        <field name="name">view.partner.category.form.inherit.strai.email.so.to.store</field>
+        <field name="model">res.partner.category</field>
+        <field name="inherit_id" ref="base.view_partner_category_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='active']" position="after">
+                <field name="f_store_email_recipient_domain" widget="boolean_toggle"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

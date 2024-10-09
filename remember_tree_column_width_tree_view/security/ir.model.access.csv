@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_column_field_width_user,access.column.field.width.user,model_column_field_width_user,base.group_user,1,1,1,1
+
+

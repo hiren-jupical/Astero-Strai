@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account_view_move_form" model="ir.ui.view">
+        <field name="name">account.view.move.form.invoice_approval_process</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="after">
+                <field name="first_approval" invisible="1"/>
+                <field name="second_approval" invisible="1"/>
+            </xpath>
+            <xpath expr="//button[@id='account_invoice_payment_btn']" position="attributes">
+                <attribute name="invisible">state != 'posted' or payment_state not in ('not_paid', 'partial') or move_type not in ('in_invoice', 'in_refund', 'out_receipt', 'in_receipt')</attribute>
+            </xpath>
+            <!-- <xpath expr="//field[@name='invoice_line_ids']/tree" position="attributes"> 
+                <attribute name="decoration-danger">purchase_line_id and not validated</attribute>
+            </xpath> -->
+            <!--remove attributes for visibility on action_invoice open button-->
+            <xpath expr="//button[@name='action_post'][2]" position="attributes">
+                <attribute name="invisible">state != 'draft' or move_type == 'entry' or first_approval or second_approval</attribute>
+            </xpath>
+            <!-- remove cancel button from view. No invoies should ever be cancelled, only a creditnote should zero-out the invoice. -->
+            <!-- exceptions are documents that are not invoices, but are created as an invoice - these should be deleted -->
+            <xpath expr="//button[@name='button_cancel'][2]" position="attributes">
+                <attribute name="invisible">not id or state != 'draft' or move_type in ('entry', 'in_invoice', 'in_refund', 'out_invoice')</attribute>
+            </xpath>
+            <!--adding manager/ director approval buttons-->
+            <xpath expr="//button[@name='action_post']" position="after">
+                <button name="action_first_approval" type="object" string="Manager Approval"
+                        groups="account.group_account_invoice" class="oe_highlight"
+                        invisible="not first_approval or not first_approval_user_id"/>
+                <button name="action_second_approval" type="object" string="Director Approval"
+                        groups="account.group_account_invoice" class="oe_highlight"
+                        invisible="first_approval or not second_approval or not second_approval_user_id"/>
+            </xpath>
+            <!--adding approval info page-->
+            <xpath expr="//notebook" position="inside">
+                <page name="approval_info" string="Approval Info">
+                    <group>
+                        <group>
+                            <field name="first_approval_user_id" force_save="1" readonly="approved_manager_user_id != False"/>
+                            <field name="approved_manager_user_id" />
+                            <field name="manger_approved_date" />
+                            <field name="vendor_triple_approval_enabled" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="second_approval_user_id" force_save="1" readonly="approved_director_user_id != False"/>
+                            <field name="approved_director_user_id" />
+                            <field name="director_approved_date" />
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <!--adding invoice remark field to the form view-->
+            <xpath expr="//div[@name='journal_div']" position="after">
+                <field name="invoice_remark" invisible="move_type not in ('in_invoice', 'in_refund')"/>
+            </xpath>
+            <!--adding necessary fields to the form view-->
+            <xpath expr="//page[@name='other_info']/group[@id='other_tab_group']" position="after">
+                <group>
+                    <group>
+                        <field name="first_approval" invisible="1"/>
+                        <field name="second_approval" invisible="1"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- account invoice supplier tree view customizations -->
+    <record id="account_invoice_tree_view_form" model="ir.ui.view">
+        <field name="name">account.invoice.tree.view.form.invoice_approval_process</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree"/>
+        <field name="arch" type="xml">
+            <!--adding first approval and second approval user ids to the tree view-->
+            <xpath expr='//field[@name="state"]' position="before">
+                <field name="first_approval_user_id" optional="show"/>
+                <field name="approved_manager_user_id" optional="show"/>
+                <field name="second_approval_user_id" optional="show"/>
+                <field name="approved_director_user_id" optional="show"/>
+            </xpath>
+            <xpath expr="//field[@name='invoice_date_due']" position="attributes">
+              <attribute name="widget">date</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!--adding new filters to the filter view-->
+    <record id="account_invoice_view_filter" model="ir.ui.view">
+        <field name="name">account.invoice.view.filter.inherit.invoice_approval_process</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter" />
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='activities_upcoming_all']"  position="after">
+                <separator/>
+                <filter name="invoices_for_manager_approval" string="Invoices for Manager Approval" domain="[('first_approval', '=', True)]"/>
+                <filter name="invoices_for_director_approval" string="Invoices for Director Approval" domain="[('first_approval', '=', False), ('second_approval', '=', True)]"/>
+                <filter name="my_invoices_to_approve" string="My Invoices to Approve" domain="['&amp;', '|', ('first_approval', '=', True), ('second_approval', '=', True), '|', ('first_approval_user_id', '=', uid), ('second_approval_user_id', '=', uid)]"/>
+                <filter name="ready_for_validation" string="Ready for Validation" domain="[('first_approval', '=', False), ('second_approval', '=', False), ('state', 'not in', ['cancel', 'posted'])]"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
