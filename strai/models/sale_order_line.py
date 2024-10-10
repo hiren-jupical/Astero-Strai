@@ -208,7 +208,6 @@ class SaleOrderLine(models.Model):
             quant_uom = line.product_id.uom_id
             product_qty, procurement_uom = line_uom._adjust_uom_quantities(product_qty, quant_uom)
             procurements.append(line._create_procurement(product_qty, procurement_uom, values))
-
         if procurements and self.order_id:
             self.env['procurement.group'].with_context(so_id=self.order_id,vi_so_line_id=self.id).run(procurements)
 

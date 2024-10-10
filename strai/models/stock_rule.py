@@ -159,7 +159,6 @@ class StockRule(models.Model):
 
                     order_date_planned = procurement.values['date_planned'] - relativedelta(
                         days=procurement.values['supplier'].delay)
-
             if self.env.context.get('so_id') and so_po:
                 so_id = self.env.context['so_id']
                 vi_so_line_id = self.env.context['vi_so_line_id']
@@ -205,9 +204,8 @@ class ProcurementIntGroup(models.Model):
 
         stock_rule_env = self.env['stock.rule']
         for action, action_procurements in actions_to_run.items():
-
             getattr(stock_rule_env, '_run_%s' % 'so_buy_amt')(action_procurements)
-
         return True
+
 
 #########################################################################################################################################################

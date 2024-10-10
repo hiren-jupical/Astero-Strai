@@ -184,8 +184,24 @@ class SaleOrder(models.Model):
 
     def action_create_po(self):
         self.strai_cost = 0.0
+        location_id = self.warehouse_id.out_type_id.default_location_src_id
         for rec in self.order_line:
-            so_po_val = rec.so_line_get_po_val()
+            route_ids = rec.product_id.route_ids
+            has_pull = False
+            has_buy = False
+            for route in route_ids:
+
+                if any(rule.action == 'pull' and rule.location_src_id.id == location_id.id for rule in route.rule_ids):
+                    has_pull = True
+
+                if any(rule.action == 'buy' and rule.location_dest_id.id == location_id.id for rule in route.rule_ids):
+                    has_buy = True
+
+                if has_pull and has_buy:
+                    break
+
+            if has_pull and has_buy:
+                so_po_val = rec.so_line_get_po_val()
 
     def get_po_vals(self,po_vals):
         for rec in po_vals:
